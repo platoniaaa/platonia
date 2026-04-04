@@ -1,0 +1,83 @@
+---
+const products = [
+  {
+    icon: `<svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7 md:w-8 md:h-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/><path d="M8 10h.01"/><path d="M12 10h.01"/><path d="M16 10h.01"/></svg>`,
+    title: 'Chatbot Inteligente con CRM y WMS',
+    description: 'Atención 24/7, gestión comercial integrada, control de inventario.',
+    features: [
+      'Atención automatizada por WhatsApp 24/7',
+      'CRM integrado para gestión comercial',
+      'Control de inventario y bodega (WMS)',
+      'Reportes y métricas en tiempo real'
+    ],
+    ideal: 'Comercios, distribuidoras y e-commerce'
+  },
+  {
+    icon: `<svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7 md:w-8 md:h-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg>`,
+    title: 'Plataforma de Gestión de Capacitaciones',
+    description: 'Gestión de cursos, control de participantes, reportes y analítica.',
+    features: [
+      'Gestión completa de cursos y programas',
+      'Control de participantes y asistencia',
+      'Reportes automatizados y analítica',
+      'Certificación digital integrada'
+    ],
+    ideal: 'OTECs, consultoras de RRHH'
+  }
+];
+---
+
+<section id="productos" class="relative py-14 md:py-32 bg-cream overflow-hidden">
+  <div class="absolute inset-0 noise-bg"></div>
+
+  <div class="max-w-[1280px] mx-auto px-5 sm:px-6 lg:px-8 relative z-10">
+    <div class="text-center mb-10 md:mb-20 fade-up">
+      <h2 class="section-title">Productos listos para implementar</h2>
+      <p class="section-subtitle">
+        Tecnolog&iacute;a probada que puedes empezar a usar en semanas, no meses.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-5 md:gap-8">
+      {products.map((product, i) => (
+        <div
+          class="fade-up group relative bg-white rounded-2xl p-5 sm:p-7 md:p-10 border border-gray-100 transition-all duration-300 hover:border-primary/20 hover:-translate-y-1"
+          style={`transition-delay: ${i * 150}ms`}
+        >
+          <div class="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" style="box-shadow: 0 10px 40px rgba(107, 33, 168, 0.1);"></div>
+
+          <div class="relative z-10">
+            <div class="w-14 h-14 md:w-16 md:h-16 rounded-2xl bg-gradient-to-br from-primary to-primary-light flex items-center justify-center text-white mb-5 md:mb-6 shadow-purple">
+              <Fragment set:html={product.icon} />
+            </div>
+
+            <h3 class="text-lg sm:text-xl md:text-2xl font-bold text-text-main mb-2 md:mb-3" style="font-family: var(--font-heading);">
+              {product.title}
+            </h3>
+            <p class="text-text-muted text-sm md:text-base mb-5 md:mb-6">{product.description}</p>
+
+            <div class="space-y-2.5 md:space-y-3 mb-5 md:mb-6">
+              {product.features.map(feature => (
+                <div class="flex items-start gap-2.5">
+                  <svg class="w-4 h-4 md:w-5 md:h-5 text-primary mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+                  </svg>
+                  <span class="text-text-main text-sm">{feature}</span>
+                </div>
+              ))}
+            </div>
+
+            <div class="flex flex-col sm:flex-row sm:items-center gap-3 sm:justify-between">
+              <span class="font-mono-accent text-[11px] md:text-xs text-text-muted bg-cream rounded-full px-3 py-1.5 self-start">
+                Ideal para: {product.ideal}
+              </span>
+              <a href="#contacto" class="btn-primary !py-2.5 !px-6 !text-sm w-full sm:w-auto text-center touch-manipulation">
+                Quiero saber m&aacute;s
+              </a>
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

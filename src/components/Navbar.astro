@@ -1,0 +1,239 @@
+---
+import logoCompleto from '../assets/img/logo-completo.png';
+---
+
+<nav id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-500" style="background: transparent;">
+  <div class="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex items-center justify-between h-16 md:h-20">
+      <!-- Logo -->
+      <a href="#" class="flex-shrink-0 relative z-[70]">
+        <img id="navbar-logo" src={logoCompleto.src} alt="Platonia" class="h-8 md:h-10 w-auto transition-all duration-300" />
+      </a>
+
+      <!-- Desktop Navigation -->
+      <div class="hidden md:flex items-center gap-8">
+        <a href="#servicios" class="nav-link text-sm font-medium text-white/80 hover:text-white transition-colors duration-300">Servicios</a>
+        <a href="#productos" class="nav-link text-sm font-medium text-white/80 hover:text-white transition-colors duration-300">Productos</a>
+        <a href="#por-que-platonia" class="nav-link text-sm font-medium text-white/80 hover:text-white transition-colors duration-300">¿Por qué Platonia?</a>
+        <a href="#asistente" class="nav-link text-sm font-medium text-white/80 hover:text-white transition-colors duration-300">Asistente IA</a>
+        <a href="#nosotros" class="nav-link text-sm font-medium text-white/80 hover:text-white transition-colors duration-300">Nosotros</a>
+        <a href="#contacto" class="nav-link text-sm font-medium text-white/80 hover:text-white transition-colors duration-300">Contacto</a>
+        <a href="#contacto" class="btn-primary !py-2.5 !px-6 !text-sm">Cotiza gratis</a>
+      </div>
+
+      <!-- Mobile Hamburger -->
+      <button id="menu-toggle" class="md:hidden p-3 -mr-2 text-white relative z-[70] touch-manipulation" aria-label="Abrir menú">
+        <div id="hamburger" class="w-6 h-5 relative flex flex-col justify-between">
+          <span class="hamburger-line w-full h-0.5 bg-current transition-all duration-300 origin-center"></span>
+          <span class="hamburger-line w-full h-0.5 bg-current transition-all duration-300"></span>
+          <span class="hamburger-line w-full h-0.5 bg-current transition-all duration-300 origin-center"></span>
+        </div>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- Mobile Menu (OUTSIDE nav, absolutely positioned to cover everything) -->
+<div id="mobile-menu" class="mobile-menu-overlay md:hidden" style="display:none;">
+  <!-- Close button top-right -->
+  <button id="mobile-close" class="mobile-menu-close touch-manipulation" aria-label="Cerrar menú">
+    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <line x1="18" y1="6" x2="6" y2="18"></line>
+      <line x1="6" y1="6" x2="18" y2="18"></line>
+    </svg>
+  </button>
+  <div class="mobile-menu-content">
+    <a href="#servicios" class="mobile-link" style="font-family: var(--font-heading);">Servicios</a>
+    <a href="#productos" class="mobile-link" style="font-family: var(--font-heading);">Productos</a>
+    <a href="#por-que-platonia" class="mobile-link" style="font-family: var(--font-heading);">¿Por qué Platonia?</a>
+    <a href="#asistente" class="mobile-link" style="font-family: var(--font-heading);">Asistente IA</a>
+    <a href="#nosotros" class="mobile-link" style="font-family: var(--font-heading);">Nosotros</a>
+    <a href="#contacto" class="mobile-link" style="font-family: var(--font-heading);">Contacto</a>
+    <a href="#contacto" class="btn-primary !py-3.5 !px-10 !text-lg mt-6 touch-manipulation">Cotiza gratis</a>
+  </div>
+</div>
+
+<script>
+  const navbar = document.getElementById('navbar');
+  const menuToggle = document.getElementById('menu-toggle');
+  const mobileMenu = document.getElementById('mobile-menu');
+  const hamburger = document.getElementById('hamburger');
+  const navLinks = document.querySelectorAll('.nav-link');
+  const navLogo = document.getElementById('navbar-logo') as HTMLImageElement;
+  let menuOpen = false;
+
+  function updateNavbar() {
+    if (!navbar) return;
+    const scrolled = window.scrollY > 50;
+
+    if (scrolled && !menuOpen) {
+      navbar.style.background = 'rgba(255, 255, 255, 0.85)';
+      navbar.style.backdropFilter = 'blur(12px)';
+      navbar.style.webkitBackdropFilter = 'blur(12px)';
+      navbar.style.boxShadow = '0 1px 20px rgba(107, 33, 168, 0.06)';
+      navLinks.forEach(link => {
+        link.classList.remove('text-white/80');
+        link.classList.add('text-gray-600');
+        link.classList.remove('hover:text-white');
+        link.classList.add('hover:text-primary');
+      });
+      if (navLogo) navLogo.style.filter = '';
+      if (menuToggle) {
+        menuToggle.classList.remove('text-white');
+        menuToggle.classList.add('text-gray-800');
+      }
+    } else if (!menuOpen) {
+      navbar.style.background = 'transparent';
+      navbar.style.backdropFilter = 'none';
+      navbar.style.webkitBackdropFilter = 'none';
+      navbar.style.boxShadow = 'none';
+      navLinks.forEach(link => {
+        link.classList.add('text-white/80');
+        link.classList.remove('text-gray-600');
+        link.classList.add('hover:text-white');
+        link.classList.remove('hover:text-primary');
+      });
+      if (navLogo) navLogo.style.filter = 'brightness(0) invert(1)';
+      if (menuToggle) {
+        menuToggle.classList.add('text-white');
+        menuToggle.classList.remove('text-gray-800');
+      }
+    }
+  }
+
+  updateNavbar();
+  window.addEventListener('scroll', updateNavbar);
+
+  menuToggle?.addEventListener('click', () => {
+    menuOpen = !menuOpen;
+    if (menuOpen) {
+      if (mobileMenu) mobileMenu.style.display = 'flex';
+      hamburger?.classList.add('open');
+      document.body.style.overflow = 'hidden';
+      document.documentElement.style.overflow = 'hidden';
+      // Force white elements when menu open
+      if (menuToggle) {
+        menuToggle.classList.add('text-white');
+        menuToggle.classList.remove('text-gray-800');
+      }
+      if (navLogo) navLogo.style.filter = 'brightness(0) invert(1)';
+      if (navbar) {
+        navbar.style.background = 'transparent';
+        navbar.style.backdropFilter = 'none';
+        navbar.style.boxShadow = 'none';
+      }
+    } else {
+      closeMenu();
+    }
+  });
+
+  function closeMenu() {
+    menuOpen = false;
+    if (mobileMenu) mobileMenu.style.display = 'none';
+    hamburger?.classList.remove('open');
+    document.body.style.overflow = '';
+    document.documentElement.style.overflow = '';
+    updateNavbar();
+  }
+
+  document.querySelectorAll('.mobile-link').forEach(link => {
+    link.addEventListener('click', closeMenu);
+  });
+
+  // Close button inside menu
+  document.getElementById('mobile-close')?.addEventListener('click', closeMenu);
+
+  const sections = document.querySelectorAll('section[id]');
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          navLinks.forEach(link => {
+            const isActive = link.getAttribute('href') === `#${entry.target.id}`;
+            if (isActive) {
+              link.classList.add('!font-bold');
+            } else {
+              link.classList.remove('!font-bold');
+            }
+          });
+        }
+      });
+    },
+    { rootMargin: '-20% 0px -80% 0px' }
+  );
+  sections.forEach(section => observer.observe(section));
+</script>
+
+<style>
+  #hamburger.open .hamburger-line:nth-child(1) {
+    transform: rotate(45deg) translate(5px, 5px);
+  }
+  #hamburger.open .hamburger-line:nth-child(2) {
+    opacity: 0;
+  }
+  #hamburger.open .hamburger-line:nth-child(3) {
+    transform: rotate(-45deg) translate(6px, -6px);
+  }
+
+  /* Mobile menu - uses position fixed with explicit dimensions for GAS iframe compatibility */
+  .mobile-menu-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    height: 100dvh;
+    z-index: 60;
+    background: rgba(15, 10, 26, 0.97);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    -webkit-backdrop-filter: blur(20px);
+    backdrop-filter: blur(20px);
+  }
+
+  .mobile-menu-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+    padding: 2rem;
+    width: 100%;
+  }
+
+  .mobile-menu-content .mobile-link {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: rgba(255, 255, 255, 0.9);
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    transition: color 0.2s;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+  }
+
+  .mobile-menu-content .mobile-link:hover,
+  .mobile-menu-content .mobile-link:active {
+    color: #A855F7;
+  }
+
+  .mobile-menu-close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 12px;
+    cursor: pointer;
+    z-index: 65;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .mobile-menu-close:active {
+    background: rgba(168, 85, 247, 0.3);
+  }
+</style>

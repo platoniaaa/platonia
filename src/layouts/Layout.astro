@@ -1,0 +1,105 @@
+---
+import Navbar from '../components/Navbar.astro';
+import WhatsAppButton from '../components/WhatsAppButton.astro';
+import '../styles/global.css';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = 'Platonia | Soluciones Digitales Inteligentes para Pymes — Páginas Web, Automatización e IA',
+  description = 'Startup tecnológica chilena que crea páginas web, automatiza procesos con IA y desarrolla plataformas digitales para pymes. Cotiza gratis.'
+} = Astro.props;
+
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+---
+
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description} />
+    <meta name="generator" content={Astro.generator} />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" sizes="32x32" href="/img/isotipo.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/img/isotipo.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/img/isotipo.png" />
+
+    <!-- Canonical -->
+    <link rel="canonical" href={canonicalURL} />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:image" content="/img/logo-completo.png" />
+    <meta property="og:locale" content="es_CL" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+
+    <!-- Fonts: Satoshi (headings) + DM Sans (body) + JetBrains Mono (accents) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+    <!-- Satoshi from Fontshare -->
+    <link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700,900&display=swap" rel="stylesheet" />
+
+    <title>{title}</title>
+
+    <!-- Schema markup -->
+    <script type="application/ld+json" set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": ["Organization", "LocalBusiness"],
+      "name": "Platonia",
+      "description": "Startup tecnológica chilena que crea páginas web, automatiza procesos con IA y desarrolla plataformas digitales para pymes.",
+      "url": "https://platonia.cl",
+      "logo": "https://platonia.cl/img/logo-completo.png",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Santiago",
+        "addressCountry": "CL"
+      },
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "telephone": "+56997076130",
+        "contactType": "sales",
+        "availableLanguage": "Spanish"
+      },
+      "sameAs": []
+    })} />
+  </head>
+  <body class="bg-white text-text-main antialiased overflow-x-hidden">
+    <Navbar />
+    <main>
+      <slot />
+    </main>
+    <WhatsAppButton />
+
+    <!-- Scroll reveal animations with stagger -->
+    <script>
+      const fadeElements = document.querySelectorAll('.fade-up');
+
+      const revealObserver = new IntersectionObserver(
+        (entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('visible');
+              revealObserver.unobserve(entry.target);
+            }
+          });
+        },
+        { threshold: 0.1, rootMargin: '0px 0px -50px 0px' }
+      );
+
+      fadeElements.forEach(el => revealObserver.observe(el));
+    </script>
+  </body>
+</html>

@@ -1,0 +1,104 @@
+---
+const differentiators = [
+  {
+    icon: `<svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>`,
+    title: 'Precios reales para pymes reales',
+    description: 'No inflamos costos. Cada propuesta se ajusta a tu realidad y presupuesto.'
+  },
+  {
+    icon: `<svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a4 4 0 014 4c0 1.95-2 4-4 6-2-2-4-4.05-4-6a4 4 0 014-4z"/><path d="M12 18a8 8 0 100-16 8 8 0 000 16z"/><path d="M12 18v4"/></svg>`,
+    title: 'Inteligencia artificial aplicada',
+    description: 'No hablamos de IA como buzzword. La integramos donde realmente agrega valor a tu operación.'
+  },
+  {
+    icon: `<svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>`,
+    title: 'Soluciones listas para usar',
+    description: 'Con nuestros productos propios puedes estar operando en semanas, no meses.'
+  },
+  {
+    icon: `<svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>`,
+    title: 'Un equipo que te entiende',
+    description: 'Hablamos tu idioma, conocemos tus desafíos y nos comprometemos con tus resultados.'
+  },
+  {
+    icon: `<svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>`,
+    title: 'Tecnología escalable',
+    description: 'Lo que construimos hoy crece contigo. Soluciones pensadas para acompañar tu evolución.'
+  },
+  {
+    icon: `<svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>`,
+    title: 'Transparencia total',
+    description: 'Sin letra chica, sin costos ocultos. Siempre sabes qué estás contratando y cuánto cuesta.'
+  }
+];
+
+const steps = [
+  { number: '01', title: 'Escuchar', description: 'Nos reunimos contigo para entender tu negocio, tus desafíos y tus objetivos.' },
+  { number: '02', title: 'Diseñar', description: 'Proponemos una solución a medida con alcance claro, tiempos definidos y presupuesto transparente.' },
+  { number: '03', title: 'Construir', description: 'Desarrollamos con metodologías ágiles, mostrándote avances constantes.' },
+  { number: '04', title: 'Acompañar', description: 'Entregamos, capacitamos a tu equipo y te ofrecemos soporte continuo.' },
+];
+---
+
+<section id="por-que-platonia" class="relative py-14 md:py-32 bg-white dot-grid-bg overflow-hidden">
+  <div class="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+    <div class="text-center mb-12 md:mb-20 fade-up">
+      <h2 class="section-title">&iquest;Por qu&eacute; elegir Platonia?</h2>
+    </div>
+
+    <!-- Differentiators grid -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-8 mb-14 md:mb-28">
+      {differentiators.map((item, i) => (
+        <div
+          class="fade-up group bg-white rounded-2xl p-6 md:p-8 border border-gray-100 transition-all duration-300 hover:border-primary/20 hover:-translate-y-1 shadow-purple"
+          style={`transition-delay: ${i * 100}ms`}
+        >
+          <div class="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center text-primary mb-5 group-hover:bg-gradient-to-br group-hover:from-primary group-hover:to-primary-light group-hover:text-white transition-all duration-300">
+            <Fragment set:html={item.icon} />
+          </div>
+          <h3 class="text-lg font-bold text-text-main mb-2" style="font-family: var(--font-heading);">{item.title}</h3>
+          <p class="text-text-muted leading-relaxed text-[0.95rem]">{item.description}</p>
+        </div>
+      ))}
+    </div>
+
+    <!-- How we work timeline -->
+    <div class="fade-up">
+      <h3 class="text-2xl md:text-3xl font-bold text-center text-text-main mb-12 md:mb-16" style="font-family: var(--font-heading);">
+        C&oacute;mo trabajamos
+      </h3>
+
+      <!-- Desktop: horizontal timeline -->
+      <div class="hidden md:grid grid-cols-4 gap-6 relative">
+        <!-- Connecting line -->
+        <div class="absolute top-10 left-[12.5%] right-[12.5%] h-px bg-gradient-to-r from-primary/20 via-primary/40 to-primary/20"></div>
+
+        {steps.map((step, i) => (
+          <div class="fade-up text-center relative" style={`transition-delay: ${i * 150}ms`}>
+            <div class="relative z-10 mx-auto w-20 h-20 rounded-full bg-white border-2 border-primary/20 flex items-center justify-center mb-6 shadow-purple">
+              <span class="font-mono-accent text-2xl font-bold text-primary/60">{step.number}</span>
+            </div>
+            <h4 class="font-bold text-text-main text-lg mb-2" style="font-family: var(--font-heading);">{step.title}</h4>
+            <p class="text-text-muted text-sm leading-relaxed">{step.description}</p>
+          </div>
+        ))}
+      </div>
+
+      <!-- Mobile: vertical timeline -->
+      <div class="md:hidden space-y-8 relative pl-12">
+        <!-- Vertical line -->
+        <div class="absolute top-0 bottom-0 left-5 w-px bg-gradient-to-b from-primary/20 via-primary/40 to-primary/20"></div>
+
+        {steps.map((step, i) => (
+          <div class="fade-up relative" style={`transition-delay: ${i * 150}ms`}>
+            <div class="absolute -left-12 top-0 w-10 h-10 rounded-full bg-white border-2 border-primary/20 flex items-center justify-center shadow-purple">
+              <span class="font-mono-accent text-sm font-bold text-primary/60">{step.number}</span>
+            </div>
+            <h4 class="font-bold text-text-main text-lg mb-1" style="font-family: var(--font-heading);">{step.title}</h4>
+            <p class="text-text-muted text-sm leading-relaxed">{step.description}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>
