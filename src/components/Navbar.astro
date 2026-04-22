@@ -5,25 +5,22 @@ import logoCompleto from '../assets/img/logo-completo.png';
 <nav id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-500">
   <div class="max-w-[1440px] mx-auto px-6 md:px-10">
     <div class="flex items-center justify-between h-16 md:h-20">
-      <!-- Logo -->
       <a href="#" class="flex-shrink-0 relative z-[70]">
-        <img id="navbar-logo" src={logoCompleto.src} alt="Platonia" class="h-8 md:h-9 w-auto transition-all duration-300" />
+        <img id="navbar-logo" src={logoCompleto.src} alt="Platonia" class="h-8 md:h-9 w-auto transition-all duration-300" style="filter:brightness(0) invert(1);" />
       </a>
 
-      <!-- Desktop Navigation -->
       <div class="hidden md:flex items-center gap-9">
-        <a href="#servicios" class="nav-link text-sm transition-colors duration-300" style="color:var(--ink);">Servicios</a>
-        <a href="#productos" class="nav-link text-sm transition-colors duration-300" style="color:var(--ink);">Productos</a>
-        <a href="#asistente" class="nav-link text-sm transition-colors duration-300" style="color:var(--ink);">
-          <span class="italic-accent" style="font-family:var(--font-display);font-size:1.05em;">Asistente IA</span>
+        <a href="#servicios" class="nav-link text-sm transition-colors duration-300">Servicios</a>
+        <a href="#productos" class="nav-link text-sm transition-colors duration-300">Productos</a>
+        <a href="#asistente" class="nav-link text-sm transition-colors duration-300">
+          <span style="background:linear-gradient(135deg, var(--lilac-soft), var(--gold));background-clip:text;-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-style:italic;font-family:var(--font-display);">Asistente IA</span>
         </a>
-        <a href="#por-que-platonia" class="nav-link text-sm transition-colors duration-300" style="color:var(--ink);">Por qu&eacute;</a>
-        <a href="#nosotros" class="nav-link text-sm transition-colors duration-300" style="color:var(--ink);">Nosotros</a>
+        <a href="#por-que-platonia" class="nav-link text-sm transition-colors duration-300">Por qu&eacute;</a>
+        <a href="#nosotros" class="nav-link text-sm transition-colors duration-300">Nosotros</a>
         <a href="#contacto" class="btn-primary !py-2 !px-5 !text-xs">Cotiza gratis</a>
       </div>
 
-      <!-- Mobile Hamburger -->
-      <button id="menu-toggle" class="md:hidden p-3 -mr-2 relative z-[70] touch-manipulation" aria-label="Abrir menú" style="color:var(--ink);">
+      <button id="menu-toggle" class="md:hidden p-3 -mr-2 relative z-[70] touch-manipulation" aria-label="Abrir menú" style="color:var(--cream);">
         <div id="hamburger" class="w-6 h-5 relative flex flex-col justify-between">
           <span class="hamburger-line w-full h-0.5 transition-all duration-300 origin-center" style="background:currentColor;"></span>
           <span class="hamburger-line w-full h-0.5 transition-all duration-300" style="background:currentColor;"></span>
@@ -34,7 +31,6 @@ import logoCompleto from '../assets/img/logo-completo.png';
   </div>
 </nav>
 
-<!-- Mobile Menu -->
 <div id="mobile-menu" class="mobile-menu-overlay md:hidden" style="display:none;">
   <button id="mobile-close" class="mobile-menu-close touch-manipulation" aria-label="Cerrar menú">
     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
@@ -43,10 +39,10 @@ import logoCompleto from '../assets/img/logo-completo.png';
     </svg>
   </button>
   <div class="mobile-menu-content">
-    <div class="marginalia mb-8" style="color:var(--sepia);">&Iacute;ndice</div>
+    <div class="marginalia mb-8" style="color:var(--lilac);">&Iacute;ndice</div>
     <a href="#servicios" class="mobile-link">Servicios</a>
     <a href="#productos" class="mobile-link">Productos</a>
-    <a href="#asistente" class="mobile-link italic-accent">Asistente IA</a>
+    <a href="#asistente" class="mobile-link" style="background:linear-gradient(135deg, var(--lilac-soft), var(--gold));background-clip:text;-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-style:italic;">Asistente IA</a>
     <a href="#por-que-platonia" class="mobile-link">&iquest;Por qu&eacute; Platonia?</a>
     <a href="#nosotros" class="mobile-link">Nosotros</a>
     <a href="#contacto" class="mobile-link">Contacto</a>
@@ -65,12 +61,11 @@ import logoCompleto from '../assets/img/logo-completo.png';
   function updateNavbar() {
     if (!navbar) return;
     const scrolled = window.scrollY > 30;
-
     if (scrolled && !menuOpen) {
-      navbar.style.background = 'rgba(250, 247, 240, 0.88)';
-      (navbar.style as any).backdropFilter = 'blur(14px)';
-      (navbar.style as any).webkitBackdropFilter = 'blur(14px)';
-      navbar.style.borderBottom = '1px solid rgba(26, 22, 20, 0.08)';
+      navbar.style.background = 'rgba(19, 6, 31, 0.75)';
+      (navbar.style as any).backdropFilter = 'blur(16px)';
+      (navbar.style as any).webkitBackdropFilter = 'blur(16px)';
+      navbar.style.borderBottom = '1px solid rgba(168, 85, 247, 0.15)';
     } else if (!menuOpen) {
       navbar.style.background = 'transparent';
       (navbar.style as any).backdropFilter = 'none';
@@ -88,10 +83,7 @@ import logoCompleto from '../assets/img/logo-completo.png';
       if (mobileMenu) mobileMenu.style.display = 'flex';
       hamburger?.classList.add('open');
       document.body.style.overflow = 'hidden';
-      document.documentElement.style.overflow = 'hidden';
-    } else {
-      closeMenu();
-    }
+    } else closeMenu();
   });
 
   function closeMenu() {
@@ -99,13 +91,10 @@ import logoCompleto from '../assets/img/logo-completo.png';
     if (mobileMenu) mobileMenu.style.display = 'none';
     hamburger?.classList.remove('open');
     document.body.style.overflow = '';
-    document.documentElement.style.overflow = '';
     updateNavbar();
   }
 
-  document.querySelectorAll('.mobile-link').forEach(link => {
-    link.addEventListener('click', closeMenu);
-  });
+  document.querySelectorAll('.mobile-link').forEach(link => link.addEventListener('click', closeMenu));
   document.getElementById('mobile-close')?.addEventListener('click', closeMenu);
 
   const sections = document.querySelectorAll('section[id]');
@@ -114,8 +103,7 @@ import logoCompleto from '../assets/img/logo-completo.png';
       entries.forEach(entry => {
         if (entry.isIntersecting) {
           navLinks.forEach(link => {
-            const isActive = link.getAttribute('href') === `#${entry.target.id}`;
-            if (isActive) link.classList.add('!font-semibold');
+            if (link.getAttribute('href') === `#${entry.target.id}`) link.classList.add('!font-semibold');
             else link.classList.remove('!font-semibold');
           });
         }
@@ -127,23 +115,17 @@ import logoCompleto from '../assets/img/logo-completo.png';
 </script>
 
 <style>
-  #hamburger.open .hamburger-line:nth-child(1) {
-    transform: rotate(45deg) translate(5px, 5px);
-  }
-  #hamburger.open .hamburger-line:nth-child(2) {
-    opacity: 0;
-  }
-  #hamburger.open .hamburger-line:nth-child(3) {
-    transform: rotate(-45deg) translate(6px, -6px);
-  }
-
   .nav-link {
     position: relative;
+    color: var(--cream);
+    opacity: 0.85;
     transition: opacity 0.3s;
   }
-  .nav-link:hover {
-    opacity: 0.6;
-  }
+  .nav-link:hover { opacity: 1; }
+
+  #hamburger.open .hamburger-line:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+  #hamburger.open .hamburger-line:nth-child(2) { opacity: 0; }
+  #hamburger.open .hamburger-line:nth-child(3) { transform: rotate(-45deg) translate(6px, -6px); }
 
   .mobile-menu-overlay {
     position: fixed;
@@ -153,7 +135,7 @@ import logoCompleto from '../assets/img/logo-completo.png';
     height: 100vh;
     height: 100dvh;
     z-index: 60;
-    background: var(--cream);
+    background: var(--night);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -171,19 +153,16 @@ import logoCompleto from '../assets/img/logo-completo.png';
   .mobile-menu-content .mobile-link {
     font-family: var(--font-display);
     font-size: 2rem;
-    font-weight: 400;
-    color: var(--ink);
+    font-weight: 500;
+    color: var(--cream);
     text-decoration: none;
     padding: 0.25rem 1rem;
-    transition: color 0.2s;
+    letter-spacing: -0.03em;
     -webkit-tap-highlight-color: transparent;
     touch-action: manipulation;
-    letter-spacing: -0.02em;
   }
 
-  .mobile-menu-content .mobile-link:active {
-    color: var(--plum);
-  }
+  .mobile-menu-content .mobile-link:active { color: var(--lilac); }
 
   .mobile-menu-close {
     position: absolute;
@@ -195,15 +174,12 @@ import logoCompleto from '../assets/img/logo-completo.png';
     align-items: center;
     justify-content: center;
     background: transparent;
-    border: 1px solid rgba(26, 22, 20, 0.2);
+    border: 1px solid rgba(216, 180, 254, 0.25);
     border-radius: 50%;
     cursor: pointer;
-    color: var(--ink);
+    color: var(--cream);
     z-index: 65;
     -webkit-tap-highlight-color: transparent;
-    transition: background 0.3s;
   }
-  .mobile-menu-close:active {
-    background: rgba(26, 22, 20, 0.08);
-  }
+  .mobile-menu-close:active { background: rgba(168, 85, 247, 0.15); }
 </style>

@@ -1,50 +1,48 @@
 ---
 ---
 
-<section id="asistente" class="relative py-20 md:py-32 overflow-hidden" style="background:var(--ink);color:var(--cream);">
-  <div class="absolute inset-0 noise-bg"></div>
+<section id="asistente" class="relative py-20 md:py-32 overflow-hidden" style="background:var(--midnight);">
 
-  <div class="max-w-[1440px] mx-auto px-6 md:px-10 relative z-10">
+  <div class="orb w-[500px] h-[500px] top-[10%] right-[-10%]" style="background:radial-gradient(circle, rgba(168,85,247,0.25) 0%, transparent 60%);"></div>
+  <div class="orb w-[400px] h-[400px] bottom-[10%] left-[-15%]" style="background:radial-gradient(circle, rgba(229,192,106,0.12) 0%, transparent 65%);animation-delay:-2s;"></div>
 
-    <!-- Editorial header -->
+  <div class="relative z-10 max-w-[1440px] mx-auto px-6 md:px-10">
+
     <div class="grid grid-cols-12 gap-4 md:gap-8 mb-14 md:mb-16 fade-up">
       <div class="col-span-12 md:col-span-3">
         <div class="eyebrow eyebrow-dot mb-4" style="color:var(--gold);">Di&aacute;logo</div>
-        <div class="hairline w-16" style="background:var(--cream);opacity:0.3;"></div>
+        <div class="hairline w-16"></div>
       </div>
       <div class="col-span-12 md:col-span-9">
-        <h2 class="display-lg" style="color:var(--cream);">
+        <h2 class="display-lg">
           &iquest;No sabes qu&eacute; necesitas?
           <br/>
-          <span class="italic-accent" style="color:var(--gold);">Preg&uacute;ntale</span> a nuestra IA.
+          <span class="italic-accent">Preg&uacute;ntale</span> a nuestra IA.
         </h2>
-        <p class="mt-6 max-w-xl text-base md:text-lg leading-relaxed" style="color:rgba(244,239,227,0.55);">
+        <p class="mt-6 max-w-xl text-base md:text-lg leading-relaxed" style="color:var(--text-muted);">
           Cu&eacute;ntale tu desaf&iacute;o al asistente digital de Platonia y recibe un diagn&oacute;stico personalizado con la soluci&oacute;n ideal para tu negocio.
         </p>
       </div>
     </div>
 
-    <!-- Chat container editorial -->
     <div class="fade-up max-w-[760px] mx-auto">
       <div id="chat-container" class="chat-box">
         <div class="chat-header">
           <div class="flex items-center gap-3">
-            <div class="w-9 h-9 flex items-center justify-center rounded-full" style="background:var(--gold);color:var(--ink);">
-              <span class="italic" style="font-family:var(--font-display);font-weight:500;font-size:1.1rem;font-variation-settings:'opsz' 144, 'SOFT' 100, 'WONK' 1;">P</span>
+            <div class="w-10 h-10 flex items-center justify-center rounded-full" style="background:linear-gradient(135deg, var(--lilac), var(--plum));">
+              <span style="font-family:var(--font-display);font-weight:500;font-size:1.1rem;font-style:italic;color:var(--cream);">P</span>
             </div>
             <div>
-              <div class="text-sm font-medium" style="color:var(--cream);font-family:var(--font-display);">
-                Asistente <span class="italic" style="color:var(--gold);">Platonia</span>
+              <div class="text-sm font-semibold" style="color:var(--cream);font-family:var(--font-display);">
+                Asistente <span class="italic-accent" style="font-weight:500;">Platonia</span>
               </div>
               <div class="flex items-center gap-1.5 mt-0.5">
                 <span class="w-1.5 h-1.5 rounded-full" style="background:#22c55e;animation:pulse-whatsapp 2s ease-in-out infinite;"></span>
-                <span class="marginalia" style="color:rgba(244,239,227,0.5);font-size:0.65rem;">En l&iacute;nea &bull; GPT-IA</span>
+                <span class="marginalia" style="font-size:0.65rem;">En l&iacute;nea &bull; GPT-IA</span>
               </div>
             </div>
           </div>
-          <div class="hidden md:block marginalia" style="color:rgba(244,239,227,0.4);">
-            Captura I &mdash;
-          </div>
+          <div class="hidden md:block marginalia">Captura I &mdash;</div>
         </div>
 
         <div id="chat-messages" class="chat-messages"></div>
@@ -74,10 +72,9 @@
         </div>
       </div>
 
-      <!-- Editorial caption -->
-      <div class="flex justify-between mt-5 marginalia" style="color:rgba(244,239,227,0.4);">
+      <div class="flex justify-between mt-5 marginalia">
         <span>Fig. 02 &mdash; Interfaz conversacional</span>
-        <span>&darr; Escribe o usa las sugerencias</span>
+        <span>&darr; Escribe o usa sugerencias</span>
       </div>
     </div>
   </div>
@@ -102,8 +99,8 @@
   const WELCOME = '¡Hola! Soy el asistente digital de Platonia. Cuéntame sobre tu negocio y qué desafío digital enfrentas, y te ayudaré a encontrar la mejor solución.';
 
   const bubbleStyles: Record<string, string> = {
-    assistant: 'background:#FAF7F0;color:#1A1614;border-radius:4px 16px 16px 16px;max-width:82%;padding:14px 18px;font-size:14.5px;line-height:1.55;word-break:break-word;font-family:var(--font-sans);border:1px solid rgba(26,22,20,0.08);',
-    user: 'background:transparent;color:rgba(244,239,227,0.95);border:1px solid rgba(244,239,227,0.18);border-radius:16px 4px 16px 16px;max-width:82%;padding:14px 18px;font-size:14.5px;line-height:1.55;word-break:break-word;font-family:var(--font-sans);',
+    assistant: 'background:rgba(168,85,247,0.12);color:#FAF7F0;border:1px solid rgba(168,85,247,0.25);border-radius:4px 16px 16px 16px;max-width:82%;padding:14px 18px;font-size:14.5px;line-height:1.55;word-break:break-word;font-family:var(--font-sans);',
+    user: 'background:rgba(250,247,240,0.08);color:#FAF7F0;border:1px solid rgba(250,247,240,0.15);border-radius:16px 4px 16px 16px;max-width:82%;padding:14px 18px;font-size:14.5px;line-height:1.55;word-break:break-word;font-family:var(--font-sans);',
   };
 
   function addMessage(role: 'user' | 'assistant', content: string) {
@@ -128,9 +125,9 @@
       optContainer.style.cssText = 'display:flex;flex-wrap:wrap;gap:6px;margin-top:10px;padding-left:4px;';
       options.forEach(opt => {
         const btn = document.createElement('button');
-        btn.style.cssText = 'background:transparent;color:var(--gold);border:1px solid rgba(201,168,118,0.5);border-radius:999px;padding:7px 15px;font-size:12.5px;font-weight:500;cursor:pointer;font-family:var(--font-sans);letter-spacing:0.01em;transition:all 0.3s;';
+        btn.style.cssText = 'background:transparent;color:var(--gold);border:1px solid rgba(229,192,106,0.4);border-radius:999px;padding:7px 15px;font-size:12.5px;font-weight:500;cursor:pointer;font-family:var(--font-sans);transition:all 0.3s;';
         btn.textContent = opt;
-        btn.addEventListener('mouseover', () => { btn.style.background = 'var(--gold)'; btn.style.color = 'var(--ink)'; });
+        btn.addEventListener('mouseover', () => { btn.style.background = 'var(--gold)'; btn.style.color = 'var(--night)'; });
         btn.addEventListener('mouseout', () => { btn.style.background = 'transparent'; btn.style.color = 'var(--gold)'; });
         btn.addEventListener('click', () => { optContainer.remove(); sendMessage(opt); });
         optContainer.appendChild(btn);
@@ -228,9 +225,9 @@
         optContainer.style.cssText = 'display:flex;flex-wrap:wrap;gap:6px;margin-top:10px;padding-left:4px;';
         options.forEach((opt: string) => {
           const btn = document.createElement('button');
-          btn.style.cssText = 'background:transparent;color:var(--gold);border:1px solid rgba(201,168,118,0.5);border-radius:999px;padding:7px 15px;font-size:12.5px;font-weight:500;cursor:pointer;font-family:var(--font-sans);letter-spacing:0.01em;transition:all 0.3s;';
+          btn.style.cssText = 'background:transparent;color:var(--gold);border:1px solid rgba(229,192,106,0.4);border-radius:999px;padding:7px 15px;font-size:12.5px;font-weight:500;cursor:pointer;font-family:var(--font-sans);transition:all 0.3s;';
           btn.textContent = opt;
-          btn.addEventListener('mouseover', () => { btn.style.background = 'var(--gold)'; btn.style.color = 'var(--ink)'; });
+          btn.addEventListener('mouseover', () => { btn.style.background = 'var(--gold)'; btn.style.color = 'var(--night)'; });
           btn.addEventListener('mouseout', () => { btn.style.background = 'transparent'; btn.style.color = 'var(--gold)'; });
           btn.addEventListener('click', () => { optContainer.remove(); sendMessage(opt); });
           optContainer.appendChild(btn);
@@ -272,7 +269,7 @@
     if (remaining < 50) {
       charCount.style.display = 'block';
       charCount.textContent = remaining.toString();
-      charCount.style.color = remaining < 10 ? '#ef4444' : '#C9A876';
+      charCount.style.color = remaining < 10 ? '#ef4444' : '#A855F7';
     } else {
       charCount.style.display = 'none';
     }
@@ -283,21 +280,22 @@
 
 <style>
   .chat-box {
-    background: rgba(26, 22, 20, 0.5);
-    -webkit-backdrop-filter: blur(16px);
-    backdrop-filter: blur(16px);
-    border-radius: 6px;
-    border: 1px solid rgba(244, 239, 227, 0.1);
+    background: linear-gradient(180deg, rgba(45, 17, 85, 0.6) 0%, rgba(30, 10, 52, 0.8) 100%);
+    -webkit-backdrop-filter: blur(20px);
+    backdrop-filter: blur(20px);
+    border-radius: 20px;
+    border: 1px solid rgba(168, 85, 247, 0.2);
     overflow: hidden;
     display: flex;
     flex-direction: column;
     position: relative;
+    box-shadow: 0 20px 80px rgba(107, 33, 168, 0.25);
   }
 
   .chat-header {
-    background: rgba(244, 239, 227, 0.03);
+    background: rgba(250, 247, 240, 0.03);
     padding: 16px 20px;
-    border-bottom: 1px solid rgba(244, 239, 227, 0.08);
+    border-bottom: 1px solid rgba(216, 180, 254, 0.1);
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -319,8 +317,8 @@
 
   .chat-typing { padding: 8px 20px; display: flex; }
   .typing-bubble {
-    background: #FAF7F0;
-    border: 1px solid rgba(26,22,20,0.08);
+    background: rgba(168, 85, 247, 0.15);
+    border: 1px solid rgba(168, 85, 247, 0.25);
     border-radius: 4px 16px 16px 16px;
     padding: 12px 18px;
     display: flex;
@@ -331,7 +329,7 @@
     width: 6px;
     height: 6px;
     border-radius: 50%;
-    background: var(--plum);
+    background: var(--lilac);
     animation: typingBounce 1.4s ease-in-out infinite;
   }
   .typing-dot:nth-child(2) { animation-delay: 0.2s; }
@@ -343,21 +341,21 @@
 
   .chat-input-area {
     padding: 14px 16px;
-    border-top: 1px solid rgba(244, 239, 227, 0.08);
+    border-top: 1px solid rgba(216, 180, 254, 0.1);
   }
   .chat-input-wrapper {
     display: flex;
     align-items: flex-end;
     gap: 8px;
-    background: rgba(244, 239, 227, 0.04);
-    border: 1px solid rgba(244, 239, 227, 0.1);
+    background: rgba(250, 247, 240, 0.04);
+    border: 1px solid rgba(216, 180, 254, 0.15);
     border-radius: 999px;
     padding: 6px 6px 6px 18px;
     position: relative;
     transition: border-color 0.3s;
   }
   .chat-input-wrapper:focus-within {
-    border-color: var(--gold);
+    border-color: var(--lilac);
   }
   .chat-input {
     flex: 1;
@@ -372,7 +370,7 @@
     line-height: 1.5;
     padding: 8px 0;
   }
-  .chat-input::placeholder { color: rgba(244, 239, 227, 0.35); }
+  .chat-input::placeholder { color: rgba(216, 180, 254, 0.35); }
 
   .char-count {
     position: absolute;
@@ -386,8 +384,8 @@
     width: 38px;
     height: 38px;
     border-radius: 999px;
-    background: var(--gold);
-    color: var(--ink);
+    background: linear-gradient(135deg, var(--lilac), var(--plum));
+    color: var(--cream);
     border: none;
     cursor: pointer;
     display: flex;
@@ -397,13 +395,13 @@
     transition: all 0.3s;
     -webkit-tap-highlight-color: transparent;
   }
-  .chat-send:hover:not(:disabled) { transform: scale(1.05); background: var(--gold-soft); }
+  .chat-send:hover:not(:disabled) { transform: scale(1.05); box-shadow: 0 8px 24px rgba(168,85,247,0.4); }
   .chat-send:disabled { opacity: 0.5; cursor: not-allowed; }
 
   .chat-limit {
     position: absolute;
     inset: 0;
-    background: rgba(26, 22, 20, 0.95);
+    background: rgba(19, 6, 31, 0.95);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -411,7 +409,7 @@
     padding: 2rem;
     text-align: center;
     z-index: 10;
-    border-radius: 6px;
+    border-radius: 20px;
   }
   .chat-limit p {
     color: var(--cream);

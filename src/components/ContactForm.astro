@@ -10,71 +10,73 @@ const serviceOptions = [
 ];
 ---
 
-<section id="contacto" class="relative py-20 md:py-32 overflow-hidden paper-grain" style="background:var(--cream);">
-  <div class="max-w-[1440px] mx-auto px-6 md:px-10 relative z-10">
+<section id="contacto" class="relative py-20 md:py-32 overflow-hidden" style="background:var(--night);">
 
-    <!-- Header -->
+  <div class="orb w-[600px] h-[600px] top-[-10%] right-[-20%]" style="background:radial-gradient(circle, rgba(168,85,247,0.2) 0%, transparent 60%);"></div>
+  <div class="orb w-[400px] h-[400px] bottom-[0%] left-[-10%]" style="background:radial-gradient(circle, rgba(229,192,106,0.1) 0%, transparent 65%);animation-delay:-3s;"></div>
+
+  <div class="relative z-10 max-w-[1440px] mx-auto px-6 md:px-10">
+
     <div class="grid grid-cols-12 gap-4 md:gap-8 mb-12 md:mb-16 fade-up">
       <div class="col-span-12 md:col-span-3">
         <div class="eyebrow eyebrow-dot mb-4">Secci&oacute;n V</div>
         <div class="hairline w-16"></div>
       </div>
       <div class="col-span-12 md:col-span-9">
-        <h2 class="display-lg" style="color:var(--ink);">
+        <h2 class="display-lg">
           Hablemos de
           <span class="italic-accent">tu proyecto.</span>
         </h2>
-        <p class="mt-5 text-base md:text-lg max-w-xl leading-relaxed" style="color:var(--ash);">
+        <p class="mt-5 text-base md:text-lg max-w-xl leading-relaxed" style="color:var(--text-muted);">
           Cu&eacute;ntanos qu&eacute; necesitas y te contactamos en menos de 24 horas. Sin compromiso, sin letra chica.
         </p>
       </div>
     </div>
 
-    <!-- Form grid -->
     <div class="grid grid-cols-12 gap-8 md:gap-16 items-start">
 
-      <!-- Contact info (left) -->
+      <!-- Contact info -->
       <div class="col-span-12 md:col-span-4 fade-up">
-        <div class="eyebrow mb-6">Cont&aacute;ctanos directo</div>
+        <div class="violet-card" style="padding:2rem;">
+          <div class="eyebrow mb-6">Cont&aacute;ctanos directo</div>
 
-        <div class="space-y-6">
-          <div>
-            <div class="marginalia mb-1">Correo</div>
-            <a href="mailto:contacto@platonia.cl" class="text-base link-underline" style="color:var(--ink);">
-              contacto@platonia.cl
+          <div class="space-y-6">
+            <div>
+              <div class="marginalia mb-1">Correo</div>
+              <a href="mailto:contacto@platonia.cl" class="text-base link-underline">
+                contacto@platonia.cl
+              </a>
+            </div>
+            <div>
+              <div class="marginalia mb-1">WhatsApp</div>
+              <a href="https://wa.me/56997076130" target="_blank" rel="noopener noreferrer" class="text-base link-underline">
+                +56 9 9707 6130
+              </a>
+            </div>
+            <div>
+              <div class="marginalia mb-1">Ubicaci&oacute;n</div>
+              <div class="text-base" style="color:var(--cream);">Santiago, Chile</div>
+            </div>
+          </div>
+
+          <div class="flex gap-3 mt-8 pt-6 border-t" style="border-color:rgba(216,180,254,0.12);">
+            <a href="#" aria-label="Instagram" class="w-10 h-10 rounded-full flex items-center justify-center transition-all" style="border:1px solid rgba(216,180,254,0.2);color:var(--lilac);">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+            </a>
+            <a href="#" aria-label="LinkedIn" class="w-10 h-10 rounded-full flex items-center justify-center transition-all" style="border:1px solid rgba(216,180,254,0.2);color:var(--lilac);">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
             </a>
           </div>
-
-          <div>
-            <div class="marginalia mb-1">WhatsApp</div>
-            <a href="https://wa.me/56997076130" target="_blank" rel="noopener noreferrer" class="text-base link-underline" style="color:var(--ink);">
-              +56 9 9707 6130
-            </a>
-          </div>
-
-          <div>
-            <div class="marginalia mb-1">Ubicaci&oacute;n</div>
-            <div class="text-base" style="color:var(--ink);">Santiago, Chile</div>
-          </div>
-        </div>
-
-        <div class="flex gap-3 mt-10">
-          <a href="#" aria-label="Instagram" class="w-10 h-10 rounded-full flex items-center justify-center transition-all" style="border:1px solid rgba(26,22,20,0.2);color:var(--ink);">
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
-          </a>
-          <a href="#" aria-label="LinkedIn" class="w-10 h-10 rounded-full flex items-center justify-center transition-all" style="border:1px solid rgba(26,22,20,0.2);color:var(--ink);">
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
-          </a>
         </div>
       </div>
 
-      <!-- Form (right) -->
+      <!-- Form -->
       <div class="col-span-12 md:col-span-8 fade-up" style="transition-delay:150ms;">
-        <form id="contact-form" class="editorial-form space-y-0">
+        <form id="contact-form" class="editorial-form space-y-0 violet-card" style="padding:2rem md:2.5rem;">
 
           <div class="form-row">
             <label for="nombre" class="form-label">
-              <span class="marginalia">01 &mdash; Nombre</span>
+              <span class="marginalia" style="color:var(--lilac);">01 &mdash; Nombre</span>
             </label>
             <input type="text" id="nombre" name="nombre" required placeholder="Ej: Juan P&eacute;rez" class="form-input" />
           </div>
@@ -82,13 +84,13 @@ const serviceOptions = [
           <div class="grid grid-cols-1 md:grid-cols-2 gap-0 md:gap-10">
             <div class="form-row">
               <label for="email" class="form-label">
-                <span class="marginalia">02 &mdash; Email</span>
+                <span class="marginalia" style="color:var(--lilac);">02 &mdash; Email</span>
               </label>
               <input type="email" id="email" name="email" required placeholder="tu@email.com" class="form-input" />
             </div>
             <div class="form-row">
               <label for="telefono" class="form-label">
-                <span class="marginalia">03 &mdash; WhatsApp <span style="color:rgba(26,22,20,0.3);">(opcional)</span></span>
+                <span class="marginalia" style="color:var(--lilac);">03 &mdash; WhatsApp</span>
               </label>
               <input type="tel" id="telefono" name="telefono" placeholder="+56 9 XXXX XXXX" class="form-input" />
             </div>
@@ -96,26 +98,26 @@ const serviceOptions = [
 
           <div class="form-row">
             <label for="empresa" class="form-label">
-              <span class="marginalia">04 &mdash; Empresa <span style="color:rgba(26,22,20,0.3);">(opcional)</span></span>
+              <span class="marginalia" style="color:var(--lilac);">04 &mdash; Empresa</span>
             </label>
             <input type="text" id="empresa" name="empresa" placeholder="Ej: Panader&iacute;a Don Jos&eacute;" class="form-input" />
           </div>
 
           <div class="form-row">
             <label for="servicio" class="form-label">
-              <span class="marginalia">05 &mdash; Servicio</span>
+              <span class="marginalia" style="color:var(--lilac);">05 &mdash; Servicio</span>
             </label>
-            <select id="servicio" name="servicio" required class="form-input" style="color:var(--ash);">
+            <select id="servicio" name="servicio" required class="form-input">
               <option value="" disabled selected>Selecciona una opci&oacute;n</option>
               {serviceOptions.map(opt => (
-                <option value={opt} style="color:var(--ink);">{opt}</option>
+                <option value={opt}>{opt}</option>
               ))}
             </select>
           </div>
 
           <div class="form-row">
             <label for="dolor" class="form-label">
-              <span class="marginalia" style="color:var(--plum);">06 &mdash; Tu desaf&iacute;o principal</span>
+              <span class="marginalia" style="color:var(--gold);">06 &mdash; Tu desaf&iacute;o principal</span>
             </label>
             <textarea id="dolor" name="dolor" required rows="4" placeholder="Cu&eacute;ntanos qu&eacute; problema quieres resolver..." class="form-input" style="resize:none;"></textarea>
           </div>
@@ -128,14 +130,14 @@ const serviceOptions = [
           </div>
 
           <div id="form-success" class="hidden text-center py-8 pt-12">
-            <div class="pull-quote mb-3" style="color:var(--ink);">
+            <div class="pull-quote mb-3">
               &iexcl;Gracias por escribirnos.
             </div>
-            <p class="text-sm" style="color:var(--ash);">Te contactaremos en menos de 24 horas.</p>
+            <p class="text-sm" style="color:var(--text-muted);">Te contactaremos en menos de 24 horas.</p>
           </div>
 
           <div id="form-error" class="hidden text-center py-2 pt-4">
-            <p class="text-sm" style="color:#dc2626;">Por favor completa todos los campos obligatorios.</p>
+            <p class="text-sm" style="color:#F87171;">Por favor completa todos los campos obligatorios.</p>
           </div>
         </form>
       </div>
@@ -151,11 +153,7 @@ const serviceOptions = [
   form.addEventListener('submit', (e) => {
     e.preventDefault();
     const formData = new FormData(form);
-    const nombre = formData.get('nombre');
-    const email = formData.get('email');
-    const servicio = formData.get('servicio');
-    const dolor = formData.get('dolor');
-    if (!nombre || !email || !servicio || !dolor) {
+    if (!formData.get('nombre') || !formData.get('email') || !formData.get('servicio') || !formData.get('dolor')) {
       errorMsg.classList.remove('hidden');
       setTimeout(() => errorMsg.classList.add('hidden'), 3000);
       return;
@@ -176,17 +174,11 @@ const serviceOptions = [
   .editorial-form .form-row {
     position: relative;
     padding: 1.25rem 0;
-    border-bottom: 1px solid rgba(26, 22, 20, 0.15);
+    border-bottom: 1px solid rgba(216, 180, 254, 0.15);
   }
   .editorial-form .form-label {
     display: block;
     margin-bottom: 0.4rem;
-    font-family: var(--font-mono);
-    font-size: 0.7rem;
-    font-weight: 500;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--sepia);
   }
   .editorial-form .form-input {
     width: 100%;
@@ -196,12 +188,12 @@ const serviceOptions = [
     padding: 0.4rem 0;
     font-family: var(--font-display);
     font-size: 1.15rem;
-    color: var(--ink);
+    color: var(--cream);
     line-height: 1.4;
     letter-spacing: -0.015em;
   }
   .editorial-form .form-input::placeholder {
-    color: rgba(26, 22, 20, 0.35);
+    color: rgba(216, 180, 254, 0.35);
     font-style: italic;
     font-weight: 300;
   }
@@ -212,15 +204,16 @@ const serviceOptions = [
   .editorial-form select.form-input {
     cursor: pointer;
     appearance: none;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%238B6F47' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23A855F7' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
     background-repeat: no-repeat;
     background-position: right 0 center;
     padding-right: 2rem;
   }
-  .editorial-form .form-row:focus-within {
-    border-bottom-color: var(--plum);
+  .editorial-form select.form-input option {
+    background: var(--plum-900);
+    color: var(--cream);
   }
-  .editorial-form .form-row:focus-within .form-label {
-    color: var(--plum);
+  .editorial-form .form-row:focus-within {
+    border-bottom-color: var(--lilac);
   }
 </style>

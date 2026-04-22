@@ -4,77 +4,74 @@ const values = [
   { title: 'Innovación con propósito', desc: 'Tecnología que resuelve problemas reales, no buzzwords.' },
   { title: 'Cercanía', desc: 'Trabajamos codo a codo, hablando tu idioma.' },
   { title: 'Transparencia', desc: 'Sin letra chica. Siempre sabes qué contratas.' },
-  { title: 'Excelencia técnica', desc: 'Detrás de cada solución accesible, un equipo cuidando cada detalle.' },
+  { title: 'Excelencia técnica', desc: 'Detrás de cada solución, cuidamos cada detalle.' },
 ];
 ---
 
-<section id="nosotros" class="relative py-20 md:py-32 paper-grain" style="background:var(--cream);">
-  <div class="max-w-[1440px] mx-auto px-6 md:px-10 relative z-10">
+<section id="nosotros" class="relative py-20 md:py-32 overflow-hidden" style="background:var(--midnight);">
 
-    <!-- Header -->
+  <div class="orb w-[500px] h-[500px] top-[5%] left-[-15%]" style="background:radial-gradient(circle, rgba(168,85,247,0.18) 0%, transparent 60%);"></div>
+
+  <div class="relative z-10 max-w-[1440px] mx-auto px-6 md:px-10">
+
     <div class="grid grid-cols-12 gap-4 md:gap-8 mb-12 md:mb-16 fade-up">
       <div class="col-span-12 md:col-span-3">
         <div class="eyebrow eyebrow-dot mb-4">Secci&oacute;n IV</div>
         <div class="hairline w-16"></div>
       </div>
       <div class="col-span-12 md:col-span-9">
-        <h2 class="display-lg" style="color:var(--ink);">
+        <h2 class="display-lg">
           Somos <span class="italic-accent">Platonia.</span>
         </h2>
       </div>
     </div>
 
-    <!-- Editorial layout: pull quote + text -->
     <div class="grid grid-cols-12 gap-6 md:gap-10 mb-16 md:mb-24">
 
-      <!-- Left: large isotipo decorative -->
+      <!-- Big violet P -->
       <div class="col-span-12 md:col-span-5 fade-up">
-        <div class="relative aspect-square max-w-[400px] mx-auto md:mx-0 flex items-center justify-center">
-          <div class="absolute inset-0 border" style="border-color:rgba(26,22,20,0.12);"></div>
-          <span class="display-xl" style="font-size:clamp(10rem,20vw,15rem);color:var(--plum);opacity:0.9;font-variation-settings:'opsz' 144, 'SOFT' 100, 'WONK' 1;font-style:italic;">P</span>
-          <div class="absolute top-3 left-3 marginalia" style="color:var(--sepia);">
-            Fig. 01
-          </div>
-          <div class="absolute bottom-3 right-3 marginalia text-right" style="color:var(--sepia);">
+        <div class="relative aspect-square max-w-[420px] mx-auto md:mx-0 flex items-center justify-center violet-card" style="padding:0;">
+          <div class="absolute inset-0 violet-mesh rounded-[20px]"></div>
+          <span class="relative z-10" style="font-family:var(--font-display);font-size:clamp(10rem,20vw,16rem);font-style:italic;font-weight:400;background:linear-gradient(135deg, var(--lilac) 0%, var(--gold) 100%);background-clip:text;-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1;">P</span>
+          <div class="absolute top-4 left-4 marginalia" style="color:var(--text-muted);">Fig. 01</div>
+          <div class="absolute bottom-4 right-4 marginalia text-right" style="color:var(--text-muted);">
             Isotipo &mdash;<br/>Plat&oacute;n + IA
           </div>
         </div>
       </div>
 
-      <!-- Right: narrative + quote -->
       <div class="col-span-12 md:col-span-7 fade-up" style="transition-delay:150ms;">
-        <p class="text-lg leading-relaxed mb-8" style="color:var(--ink-soft);">
-          Nuestro nombre combina la sabidur&iacute;a cl&aacute;sica de <em style="color:var(--plum);">Plat&oacute;n</em> con la vanguardia de la <em style="color:var(--plum);">inteligencia artificial</em>. Somos una startup chilena fundada con un prop&oacute;sito claro: hacer que las herramientas m&aacute;s poderosas del mundo digital est&eacute;n al alcance de las pymes.
+        <p class="text-lg leading-relaxed mb-8" style="color:var(--cream);">
+          Nuestro nombre combina la sabidur&iacute;a cl&aacute;sica de <em style="color:var(--lilac);font-style:italic;">Plat&oacute;n</em> con la vanguardia de la <em style="color:var(--lilac);font-style:italic;">inteligencia artificial</em>. Somos una startup chilena fundada con un prop&oacute;sito claro: hacer que las herramientas m&aacute;s poderosas del mundo digital est&eacute;n al alcance de las pymes.
         </p>
 
-        <div class="pl-6 border-l-2 mb-10" style="border-color:var(--plum);">
+        <div class="pl-6 border-l-2 mb-10" style="border-color:var(--lilac);">
           <p class="pull-quote mb-4">
             Democratizar el acceso a soluciones digitales de alto nivel para pymes y microempresas.
           </p>
-          <div class="eyebrow">Nuestra misi&oacute;n</div>
+          <div class="eyebrow" style="color:var(--gold);">Nuestra misi&oacute;n</div>
         </div>
 
-        <p class="text-base leading-relaxed" style="color:var(--ash);">
+        <p class="text-base leading-relaxed" style="color:var(--text-muted);">
           No somos una consultora m&aacute;s. Somos un equipo que entiende los desaf&iacute;os reales de las pymes: presupuestos ajustados, necesidad de resultados r&aacute;pidos y la urgencia de competir en un mercado cada vez m&aacute;s digitalizado.
         </p>
       </div>
     </div>
 
-    <!-- Values grid editorial -->
+    <!-- Values -->
     <div class="fade-up">
       <div class="grid grid-cols-12 gap-4 md:gap-8 mb-10">
         <div class="col-span-12 md:col-span-3">
           <div class="eyebrow eyebrow-dot">Valores</div>
         </div>
       </div>
-      <div class="grid grid-cols-1 md:grid-cols-5 gap-8 md:gap-6">
+      <div class="grid grid-cols-1 md:grid-cols-5 gap-5 md:gap-4">
         {values.map((value, i) => (
-          <div class="fade-up pt-6 relative" style={`transition-delay: ${i * 80}ms`}>
-            <div class="absolute top-0 left-0 right-4 h-px" style="background:var(--ink);opacity:0.2;"></div>
-            <h4 class="display-md mb-3" style="font-size:1.2rem;line-height:1.1;color:var(--ink);">
+          <div class="fade-up violet-card" style={`transition-delay: ${i * 80}ms;padding:1.5rem;`}>
+            <h4 class="display-md mb-3" style="font-size:1.15rem;line-height:1.15;">
               {value.title}
             </h4>
-            <p class="text-sm leading-relaxed" style="color:var(--ash);">
+            <p class="text-sm leading-relaxed" style="color:var(--text-muted);">
               {value.desc}
             </p>
           </div>
@@ -82,12 +79,12 @@ const values = [
       </div>
     </div>
 
-    <!-- Closing italic lema -->
-    <div class="fade-up mt-20 md:mt-28 text-center border-t pt-14 md:pt-20" style="border-color:rgba(26,22,20,0.12);">
-      <p class="pull-quote max-w-3xl mx-auto" style="text-align:center;">
+    <!-- Closing lema -->
+    <div class="fade-up mt-20 md:mt-28 text-center border-t pt-14 md:pt-20" style="border-color:rgba(216,180,254,0.12);">
+      <p class="pull-quote max-w-3xl mx-auto text-center">
         La sabidur&iacute;a de hacer las cosas bien, con la inteligencia de hacerlas mejor.
       </p>
-      <div class="eyebrow mt-8">&mdash; Platonia</div>
+      <div class="eyebrow mt-8" style="color:var(--gold);">&mdash; Platonia</div>
     </div>
   </div>
 </section>

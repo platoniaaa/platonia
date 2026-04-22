@@ -1,11 +1,11 @@
 ---
 const reasons = [
-  { n: 'i', title: 'Precios reales para pymes reales', desc: 'No inflamos costos. Cada propuesta se ajusta a tu realidad y presupuesto.' },
-  { n: 'ii', title: 'Inteligencia artificial aplicada', desc: 'No hablamos de IA como buzzword. La integramos donde realmente agrega valor.' },
-  { n: 'iii', title: 'Soluciones listas para usar', desc: 'Con nuestros productos propios puedes estar operando en semanas, no meses.' },
-  { n: 'iv', title: 'Un equipo que te entiende', desc: 'Hablamos tu idioma, conocemos tus desafíos y nos comprometemos con tus resultados.' },
-  { n: 'v', title: 'Tecnología escalable', desc: 'Lo que construimos hoy crece contigo. Soluciones pensadas para acompañar tu evolución.' },
-  { n: 'vi', title: 'Transparencia total', desc: 'Sin letra chica, sin costos ocultos. Siempre sabes qué estás contratando.' },
+  { n: '01', title: 'Precios reales para pymes reales', desc: 'No inflamos costos. Cada propuesta se ajusta a tu realidad y presupuesto.' },
+  { n: '02', title: 'Inteligencia artificial aplicada', desc: 'No hablamos de IA como buzzword. La integramos donde realmente agrega valor.' },
+  { n: '03', title: 'Soluciones listas para usar', desc: 'Con nuestros productos propios puedes estar operando en semanas, no meses.' },
+  { n: '04', title: 'Un equipo que te entiende', desc: 'Hablamos tu idioma, conocemos tus desafíos y nos comprometemos con tus resultados.' },
+  { n: '05', title: 'Tecnología escalable', desc: 'Lo que construimos hoy crece contigo. Soluciones pensadas para tu evolución.' },
+  { n: '06', title: 'Transparencia total', desc: 'Sin letra chica, sin costos ocultos. Siempre sabes qué estás contratando.' },
 ];
 
 const steps = [
@@ -16,36 +16,41 @@ const steps = [
 ];
 ---
 
-<section id="por-que-platonia" class="relative py-20 md:py-32 paper-grain" style="background:var(--ivory);">
-  <div class="max-w-[1440px] mx-auto px-6 md:px-10 relative z-10">
+<section id="por-que-platonia" class="relative py-20 md:py-32 overflow-hidden" style="background:var(--night);">
 
-    <!-- Header -->
+  <div class="orb w-[400px] h-[400px] top-[10%] left-[-10%]" style="background:radial-gradient(circle, rgba(107,33,168,0.18) 0%, transparent 60%);"></div>
+  <div class="orb w-[350px] h-[350px] bottom-[20%] right-[-10%]" style="background:radial-gradient(circle, rgba(168,85,247,0.15) 0%, transparent 60%);animation-delay:-4s;"></div>
+
+  <div class="absolute inset-0 dot-grid-bg opacity-40"></div>
+
+  <div class="relative z-10 max-w-[1440px] mx-auto px-6 md:px-10">
+
     <div class="grid grid-cols-12 gap-4 md:gap-8 mb-16 md:mb-24 fade-up">
       <div class="col-span-12 md:col-span-3">
         <div class="eyebrow eyebrow-dot mb-4">Secci&oacute;n III</div>
         <div class="hairline w-16"></div>
       </div>
       <div class="col-span-12 md:col-span-9">
-        <h2 class="display-lg" style="color:var(--ink);">
+        <h2 class="display-lg">
           Seis razones
           <span class="italic-accent">por las que</span>
-          elegirnos.
+          <br/>elegirnos.
         </h2>
       </div>
     </div>
 
-    <!-- Reasons list editorial -->
+    <!-- Reasons list -->
     <div class="grid grid-cols-1 md:grid-cols-2 gap-y-10 md:gap-y-14 gap-x-12 md:gap-x-20 mb-28 md:mb-36">
       {reasons.map((reason, i) => (
         <div class="fade-up flex gap-6 md:gap-8" style={`transition-delay: ${i * 80}ms`}>
-          <span class="font-mono-accent text-xs uppercase tracking-[0.2em] pt-1 flex-shrink-0 w-8" style="color:var(--sepia);">
-            {reason.n}.
+          <span class="font-mono-accent text-xs uppercase tracking-[0.2em] pt-1 flex-shrink-0 w-10" style="color:var(--lilac);">
+            {reason.n}
           </span>
           <div class="flex-1">
-            <h4 class="display-md mb-3" style="color:var(--ink);font-size:clamp(1.4rem,2.8vw,1.9rem);line-height:1.15;">
+            <h4 class="display-md mb-3" style="font-size:clamp(1.4rem,2.8vw,1.9rem);line-height:1.15;">
               {reason.title}
             </h4>
-            <p class="text-base leading-relaxed" style="color:var(--ash);">
+            <p class="text-base leading-relaxed" style="color:var(--text-muted);">
               {reason.desc}
             </p>
           </div>
@@ -53,30 +58,29 @@ const steps = [
       ))}
     </div>
 
-    <!-- Process / how we work -->
+    <!-- Process -->
     <div class="fade-up">
       <div class="grid grid-cols-12 gap-4 md:gap-8 mb-12 md:mb-16">
         <div class="col-span-12 md:col-span-3">
           <div class="eyebrow eyebrow-dot mb-4">Proceso</div>
         </div>
         <div class="col-span-12 md:col-span-9">
-          <h3 class="display-md" style="color:var(--ink);">
+          <h3 class="display-md">
             C&oacute;mo <span class="italic-accent">trabajamos.</span>
           </h3>
         </div>
       </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-4 gap-8 md:gap-4">
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-8 md:gap-5">
         {steps.map((step, i) => (
-          <div class="fade-up relative pt-6 md:pr-6" style={`transition-delay: ${i * 100}ms`}>
-            <div class="absolute top-0 left-0 right-4 h-px" style="background:var(--ink);opacity:0.25;"></div>
+          <div class="fade-up violet-card relative" style={`transition-delay: ${i * 100}ms;padding:1.75rem;`}>
             <span class="chapter-num block mb-4" style="font-size:3rem;line-height:1;">
               {step.num}
             </span>
-            <h4 class="display-md mb-3" style="font-size:1.4rem;color:var(--ink);">
+            <h4 class="display-md mb-3" style="font-size:1.4rem;">
               {step.title}
             </h4>
-            <p class="text-sm leading-relaxed" style="color:var(--ash);">
+            <p class="text-sm leading-relaxed" style="color:var(--text-muted);">
               {step.desc}
             </p>
           </div>

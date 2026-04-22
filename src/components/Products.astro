@@ -4,7 +4,7 @@ const products = [
     num: '01',
     title: 'Chatbot Inteligente',
     subtitle: 'con CRM y WMS',
-    description: 'Atención 24/7, gestión comercial integrada, control de inventario. Cada interacción alimenta un CRM que genera prospectos y oportunidades automáticamente.',
+    description: 'Atención 24/7, gestión comercial integrada, control de inventario. Cada interacción alimenta un CRM que genera prospectos automáticamente.',
     features: [
       'Atención automatizada por WhatsApp',
       'CRM integrado para gestión comercial',
@@ -17,7 +17,7 @@ const products = [
     num: '02',
     title: 'Plataforma de',
     subtitle: 'Capacitaciones',
-    description: 'Sistema completo para gestionar cursos, participantes, asistencia y certificaciones. Dashboards con métricas de rendimiento y satisfacción.',
+    description: 'Sistema completo para gestionar cursos, participantes, asistencia y certificaciones. Dashboards con métricas de rendimiento.',
     features: [
       'Gestión de cursos y programas',
       'Control de participantes y asistencia',
@@ -29,8 +29,12 @@ const products = [
 ];
 ---
 
-<section id="productos" class="relative py-20 md:py-32 paper-grain" style="background:var(--cream);">
-  <div class="max-w-[1440px] mx-auto px-6 md:px-10 relative z-10">
+<section id="productos" class="relative py-20 md:py-32 overflow-hidden" style="background:var(--midnight);">
+
+  <!-- Ambient glow -->
+  <div class="orb w-[500px] h-[500px] top-[20%] right-[-15%]" style="background:radial-gradient(circle, rgba(168,85,247,0.15) 0%, transparent 60%);"></div>
+
+  <div class="relative z-10 max-w-[1440px] mx-auto px-6 md:px-10">
 
     <div class="grid grid-cols-12 gap-4 md:gap-8 mb-16 md:mb-20 fade-up">
       <div class="col-span-12 md:col-span-3">
@@ -38,56 +42,53 @@ const products = [
         <div class="hairline w-16"></div>
       </div>
       <div class="col-span-12 md:col-span-9">
-        <h2 class="display-lg" style="color:var(--ink);">
+        <h2 class="display-lg">
           Productos <span class="italic-accent">ya construidos,</span>
-          listos para operar en semanas.
+          <br/>listos para operar en semanas.
         </h2>
       </div>
     </div>
 
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-10">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-5 md:gap-6">
       {products.map((product, i) => (
-        <article class="fade-up relative" style={`transition-delay: ${i * 150}ms`}>
-          <div class="h-full p-7 md:p-10 editorial-card flex flex-col">
+        <article class="fade-up violet-card" style={`transition-delay: ${i * 150}ms;padding:2.5rem;`}>
+          <div class="flex items-baseline justify-between mb-8">
+            <span class="font-mono-accent text-xs tracking-[0.2em]" style="color:var(--text-muted);">
+              PRODUCTO / {product.num}
+            </span>
+            <span class="marginalia italic" style="font-family:var(--font-display);color:var(--gold);">
+              listo para usar
+            </span>
+          </div>
 
-            <div class="flex items-baseline justify-between mb-8">
-              <span class="font-mono-accent text-xs" style="color:var(--sepia);letter-spacing:0.2em;">
-                PRODUCTO / {product.num}
-              </span>
-              <span class="marginalia italic" style="font-family:var(--font-display);color:var(--plum);">
-                listo para usar
-              </span>
+          <h3 class="display-md mb-1">
+            {product.title}
+          </h3>
+          <p class="display-md italic-accent mb-6" style="font-weight:400;">
+            {product.subtitle}
+          </p>
+
+          <p class="text-base leading-relaxed mb-8" style="color:var(--text-muted);">
+            {product.description}
+          </p>
+
+          <ul class="space-y-3 mb-8">
+            {product.features.map(feature => (
+              <li class="flex items-start gap-3 text-sm" style="color:var(--cream);">
+                <span class="font-mono-accent pt-0.5 flex-shrink-0" style="color:var(--lilac);">→</span>
+                <span>{feature}</span>
+              </li>
+            ))}
+          </ul>
+
+          <div class="mt-auto pt-6 border-t flex items-end justify-between gap-4 flex-wrap" style="border-color:rgba(216,180,254,0.12);">
+            <div>
+              <div class="eyebrow mb-1" style="color:var(--text-muted);">Ideal para</div>
+              <div class="text-sm" style="color:var(--cream);">{product.ideal}</div>
             </div>
-
-            <h3 class="display-md mb-1" style="color:var(--ink);">
-              {product.title}
-            </h3>
-            <p class="display-md italic-accent mb-6" style="font-weight:300;">
-              {product.subtitle}
-            </p>
-
-            <p class="text-base leading-relaxed mb-8" style="color:var(--ink-soft);">
-              {product.description}
-            </p>
-
-            <ul class="space-y-3 mb-8">
-              {product.features.map(feature => (
-                <li class="flex items-start gap-3 text-sm" style="color:var(--ink-soft);">
-                  <span class="font-mono-accent pt-0.5 flex-shrink-0" style="color:var(--plum);">&rarr;</span>
-                  <span>{feature}</span>
-                </li>
-              ))}
-            </ul>
-
-            <div class="mt-auto pt-6 border-t flex items-end justify-between gap-4 flex-wrap" style="border-color:rgba(26,22,20,0.12);">
-              <div>
-                <div class="eyebrow mb-1">Ideal para</div>
-                <div class="text-sm" style="color:var(--ink);">{product.ideal}</div>
-              </div>
-              <a href="#contacto" class="btn-primary !py-2.5 !px-5 !text-sm">
-                Saber m&aacute;s
-              </a>
-            </div>
+            <a href="#contacto" class="btn-primary !py-2.5 !px-5 !text-sm">
+              Saber m&aacute;s
+            </a>
           </div>
         </article>
       ))}

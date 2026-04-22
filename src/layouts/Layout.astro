@@ -23,36 +23,32 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content={description} />
     <meta name="generator" content={Astro.generator} />
+    <meta name="theme-color" content="#13061F" />
 
-    <!-- Favicon -->
     <link rel="icon" type="image/png" sizes="32x32" href="/img/isotipo.png" />
     <link rel="icon" type="image/png" sizes="16x16" href="/img/isotipo.png" />
     <link rel="apple-touch-icon" sizes="180x180" href="/img/isotipo.png" />
-
-    <!-- Canonical -->
     <link rel="canonical" href={canonicalURL} />
 
-    <!-- Open Graph -->
     <meta property="og:type" content="website" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonicalURL} />
     <meta property="og:image" content="/img/logo-completo.png" />
     <meta property="og:locale" content="es_CL" />
-
-    <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
 
-    <!-- Fonts: Fraunces (editorial serif, variable) + DM Sans (body) + JetBrains Mono (accents) -->
+    <!-- Fonts: Clash Display (headlines) + Manrope (body) + JetBrains Mono (accents) -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT,WONK@0,9..144,300..900,0..100,0..1;1,9..144,300..900,0..100,0..1&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+    <link rel="preconnect" href="https://api.fontshare.com" crossorigin />
+    <link href="https://api.fontshare.com/v2/css?f[]=clash-display@400,500,600,700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
 
     <title>{title}</title>
 
-    <!-- Schema markup -->
     <script type="application/ld+json" set:html={JSON.stringify({
       "@context": "https://schema.org",
       "@type": ["Organization", "LocalBusiness"],
@@ -60,21 +56,12 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
       "description": "Startup tecnológica chilena que crea páginas web, automatiza procesos con IA y desarrolla plataformas digitales para pymes.",
       "url": "https://platonia.cl",
       "logo": "https://platonia.cl/img/logo-completo.png",
-      "address": {
-        "@type": "PostalAddress",
-        "addressLocality": "Santiago",
-        "addressCountry": "CL"
-      },
-      "contactPoint": {
-        "@type": "ContactPoint",
-        "telephone": "+56997076130",
-        "contactType": "sales",
-        "availableLanguage": "Spanish"
-      },
+      "address": { "@type": "PostalAddress", "addressLocality": "Santiago", "addressCountry": "CL" },
+      "contactPoint": { "@type": "ContactPoint", "telephone": "+56997076130", "contactType": "sales", "availableLanguage": "Spanish" },
       "sameAs": []
     })} />
   </head>
-  <body class="antialiased overflow-x-hidden" style="background:var(--ivory);color:var(--ink);">
+  <body class="antialiased overflow-x-hidden">
     <Navbar />
     <main>
       <slot />

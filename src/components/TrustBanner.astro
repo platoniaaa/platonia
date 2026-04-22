@@ -10,11 +10,11 @@ const marqueeItems = [
 ];
 ---
 
-<section class="relative py-6 md:py-8 overflow-hidden border-y" style="background:var(--ink);color:var(--cream);border-color:rgba(250,247,240,0.1);">
+<section class="relative py-6 md:py-8 overflow-hidden" style="background:linear-gradient(90deg, var(--plum-900), var(--plum-800), var(--plum-900));border-top:1px solid rgba(168,85,247,0.2);border-bottom:1px solid rgba(168,85,247,0.2);">
   <div class="marquee-track gap-12 md:gap-16 whitespace-nowrap">
     {[...marqueeItems, ...marqueeItems, ...marqueeItems].map((item) => (
       <div class="flex items-center gap-12 md:gap-16 flex-shrink-0">
-        <span class="font-mono-accent text-xs md:text-sm uppercase tracking-[0.2em]" style="color:var(--gold);" set:html={`• ${item}`}></span>
+        <span class="font-mono-accent text-xs md:text-sm uppercase tracking-[0.2em]" style="color:var(--gold);" set:html={`✦ ${item}`}></span>
       </div>
     ))}
   </div>
