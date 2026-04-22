@@ -1,82 +1,95 @@
 ---
 const products = [
   {
-    icon: `<svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7 md:w-8 md:h-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/><path d="M8 10h.01"/><path d="M12 10h.01"/><path d="M16 10h.01"/></svg>`,
-    title: 'Chatbot Inteligente con CRM y WMS',
-    description: 'Atención 24/7, gestión comercial integrada, control de inventario.',
+    num: '01',
+    title: 'Chatbot Inteligente',
+    subtitle: 'con CRM y WMS',
+    description: 'Atención 24/7, gestión comercial integrada, control de inventario. Cada interacción alimenta un CRM que genera prospectos y oportunidades automáticamente.',
     features: [
-      'Atención automatizada por WhatsApp 24/7',
+      'Atención automatizada por WhatsApp',
       'CRM integrado para gestión comercial',
-      'Control de inventario y bodega (WMS)',
-      'Reportes y métricas en tiempo real'
+      'WMS: control de stock y despachos',
+      'Reportes en tiempo real',
     ],
-    ideal: 'Comercios, distribuidoras y e-commerce'
+    ideal: 'Comercios, distribuidoras, e-commerce',
   },
   {
-    icon: `<svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7 md:w-8 md:h-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg>`,
-    title: 'Plataforma de Gestión de Capacitaciones',
-    description: 'Gestión de cursos, control de participantes, reportes y analítica.',
+    num: '02',
+    title: 'Plataforma de',
+    subtitle: 'Capacitaciones',
+    description: 'Sistema completo para gestionar cursos, participantes, asistencia y certificaciones. Dashboards con métricas de rendimiento y satisfacción.',
     features: [
-      'Gestión completa de cursos y programas',
+      'Gestión de cursos y programas',
       'Control de participantes y asistencia',
-      'Reportes automatizados y analítica',
-      'Certificación digital integrada'
+      'Reportes y analítica',
+      'Certificación digital integrada',
     ],
-    ideal: 'OTECs, consultoras de RRHH'
-  }
+    ideal: 'OTECs, consultoras de RRHH, formación',
+  },
 ];
 ---
 
-<section id="productos" class="relative py-14 md:py-32 bg-cream overflow-hidden">
-  <div class="absolute inset-0 noise-bg"></div>
+<section id="productos" class="relative py-20 md:py-32 paper-grain" style="background:var(--cream);">
+  <div class="max-w-[1440px] mx-auto px-6 md:px-10 relative z-10">
 
-  <div class="max-w-[1280px] mx-auto px-5 sm:px-6 lg:px-8 relative z-10">
-    <div class="text-center mb-10 md:mb-20 fade-up">
-      <h2 class="section-title">Productos listos para implementar</h2>
-      <p class="section-subtitle">
-        Tecnolog&iacute;a probada que puedes empezar a usar en semanas, no meses.
-      </p>
+    <div class="grid grid-cols-12 gap-4 md:gap-8 mb-16 md:mb-20 fade-up">
+      <div class="col-span-12 md:col-span-3">
+        <div class="eyebrow eyebrow-dot mb-4">Secci&oacute;n II</div>
+        <div class="hairline w-16"></div>
+      </div>
+      <div class="col-span-12 md:col-span-9">
+        <h2 class="display-lg" style="color:var(--ink);">
+          Productos <span class="italic-accent">ya construidos,</span>
+          listos para operar en semanas.
+        </h2>
+      </div>
     </div>
 
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-5 md:gap-8">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-10">
       {products.map((product, i) => (
-        <div
-          class="fade-up group relative bg-white rounded-2xl p-5 sm:p-7 md:p-10 border border-gray-100 transition-all duration-300 hover:border-primary/20 hover:-translate-y-1"
-          style={`transition-delay: ${i * 150}ms`}
-        >
-          <div class="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" style="box-shadow: 0 10px 40px rgba(107, 33, 168, 0.1);"></div>
+        <article class="fade-up relative" style={`transition-delay: ${i * 150}ms`}>
+          <div class="h-full p-7 md:p-10 editorial-card flex flex-col">
 
-          <div class="relative z-10">
-            <div class="w-14 h-14 md:w-16 md:h-16 rounded-2xl bg-gradient-to-br from-primary to-primary-light flex items-center justify-center text-white mb-5 md:mb-6 shadow-purple">
-              <Fragment set:html={product.icon} />
+            <div class="flex items-baseline justify-between mb-8">
+              <span class="font-mono-accent text-xs" style="color:var(--sepia);letter-spacing:0.2em;">
+                PRODUCTO / {product.num}
+              </span>
+              <span class="marginalia italic" style="font-family:var(--font-display);color:var(--plum);">
+                listo para usar
+              </span>
             </div>
 
-            <h3 class="text-lg sm:text-xl md:text-2xl font-bold text-text-main mb-2 md:mb-3" style="font-family: var(--font-heading);">
+            <h3 class="display-md mb-1" style="color:var(--ink);">
               {product.title}
             </h3>
-            <p class="text-text-muted text-sm md:text-base mb-5 md:mb-6">{product.description}</p>
+            <p class="display-md italic-accent mb-6" style="font-weight:300;">
+              {product.subtitle}
+            </p>
 
-            <div class="space-y-2.5 md:space-y-3 mb-5 md:mb-6">
+            <p class="text-base leading-relaxed mb-8" style="color:var(--ink-soft);">
+              {product.description}
+            </p>
+
+            <ul class="space-y-3 mb-8">
               {product.features.map(feature => (
-                <div class="flex items-start gap-2.5">
-                  <svg class="w-4 h-4 md:w-5 md:h-5 text-primary mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
-                  </svg>
-                  <span class="text-text-main text-sm">{feature}</span>
-                </div>
+                <li class="flex items-start gap-3 text-sm" style="color:var(--ink-soft);">
+                  <span class="font-mono-accent pt-0.5 flex-shrink-0" style="color:var(--plum);">&rarr;</span>
+                  <span>{feature}</span>
+                </li>
               ))}
-            </div>
+            </ul>
 
-            <div class="flex flex-col sm:flex-row sm:items-center gap-3 sm:justify-between">
-              <span class="font-mono-accent text-[11px] md:text-xs text-text-muted bg-cream rounded-full px-3 py-1.5 self-start">
-                Ideal para: {product.ideal}
-              </span>
-              <a href="#contacto" class="btn-primary !py-2.5 !px-6 !text-sm w-full sm:w-auto text-center touch-manipulation">
-                Quiero saber m&aacute;s
+            <div class="mt-auto pt-6 border-t flex items-end justify-between gap-4 flex-wrap" style="border-color:rgba(26,22,20,0.12);">
+              <div>
+                <div class="eyebrow mb-1">Ideal para</div>
+                <div class="text-sm" style="color:var(--ink);">{product.ideal}</div>
+              </div>
+              <a href="#contacto" class="btn-primary !py-2.5 !px-5 !text-sm">
+                Saber m&aacute;s
               </a>
             </div>
           </div>
-        </div>
+        </article>
       ))}
     </div>
   </div>

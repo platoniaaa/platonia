@@ -1,66 +1,21 @@
 ---
-const metrics = [
-  { value: 20, suffix: '+', label: 'Proyectos entregados' },
-  { value: 5, suffix: '+', label: 'Años automatizando' },
-  { value: 50, suffix: '+', label: 'Procesos automatizados' },
+const marqueeItems = [
+  'Presencia digital',
+  'Automatización IA',
+  'ERP &amp; CRM',
+  'Integración de sistemas',
+  'Desarrollo a medida',
+  'Chatbot inteligente',
+  'Capacitaciones',
 ];
 ---
 
-<section class="relative py-8 md:py-14 bg-cream overflow-hidden">
-  <div class="max-w-[1280px] mx-auto px-5 sm:px-6 lg:px-8">
-    <!-- Mobile: horizontal scroll-like grid -->
-    <div class="grid grid-cols-3 gap-3 md:flex md:flex-row md:items-center md:justify-center md:gap-16">
-      {metrics.map((metric, i) => (
-        <div class="fade-up flex flex-col md:flex-row items-center gap-1 md:gap-4 text-center" style={`transition-delay: ${i * 150}ms`}>
-          <span class="font-mono-accent text-xl sm:text-2xl md:text-4xl font-bold text-primary">
-            <span class="trust-counter" data-target={metric.value}>0</span>{metric.suffix}
-          </span>
-          <span class="text-text-muted text-[11px] sm:text-xs md:text-base font-medium leading-tight">{metric.label}</span>
-          {i < metrics.length - 1 && (
-            <div class="hidden md:block w-px h-10 bg-primary/10 ml-12"></div>
-          )}
-        </div>
-      ))}
-    </div>
-    <p class="text-center text-text-muted/60 text-xs md:text-sm mt-4 md:mt-6 font-mono-accent tracking-wide">
-      Pymes de Chile conf&iacute;an en nosotros
-    </p>
+<section class="relative py-6 md:py-8 overflow-hidden border-y" style="background:var(--ink);color:var(--cream);border-color:rgba(250,247,240,0.1);">
+  <div class="marquee-track gap-12 md:gap-16 whitespace-nowrap">
+    {[...marqueeItems, ...marqueeItems, ...marqueeItems].map((item) => (
+      <div class="flex items-center gap-12 md:gap-16 flex-shrink-0">
+        <span class="font-mono-accent text-xs md:text-sm uppercase tracking-[0.2em]" style="color:var(--gold);" set:html={`• ${item}`}></span>
+      </div>
+    ))}
   </div>
 </section>
-
-<script>
-  const trustCounters = document.querySelectorAll('.trust-counter');
-
-  const animateCounter = (el: Element) => {
-    const target = parseInt(el.getAttribute('data-target') || '0');
-    const duration = 2000;
-    const step = target / (duration / 16);
-    let current = 0;
-
-    const update = () => {
-      current += step;
-      if (current < target) {
-        el.textContent = Math.floor(current).toString();
-        requestAnimationFrame(update);
-      } else {
-        el.textContent = target.toString();
-      }
-    };
-    update();
-  };
-
-  const trustObserver = new IntersectionObserver(
-    (entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.querySelectorAll('.trust-counter').forEach(el => animateCounter(el));
-          trustObserver.unobserve(entry.target);
-        }
-      });
-    },
-    { threshold: 0.5 }
-  );
-
-  const trustSection = document.querySelector('.trust-counter')?.closest('section');
-  if (trustSection) trustObserver.observe(trustSection);
-</script>

@@ -45,12 +45,10 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
 
-    <!-- Fonts: Satoshi (headings) + DM Sans (body) + JetBrains Mono (accents) -->
+    <!-- Fonts: Fraunces (editorial serif, variable) + DM Sans (body) + JetBrains Mono (accents) -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
-    <!-- Satoshi from Fontshare -->
-    <link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700,900&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT,WONK@0,9..144,300..900,0..100,0..1;1,9..144,300..900,0..100,0..1&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
 
     <title>{title}</title>
 
@@ -76,17 +74,15 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
       "sameAs": []
     })} />
   </head>
-  <body class="bg-white text-text-main antialiased overflow-x-hidden">
+  <body class="antialiased overflow-x-hidden" style="background:var(--ivory);color:var(--ink);">
     <Navbar />
     <main>
       <slot />
     </main>
     <WhatsAppButton />
 
-    <!-- Scroll reveal animations with stagger -->
     <script>
       const fadeElements = document.querySelectorAll('.fade-up');
-
       const revealObserver = new IntersectionObserver(
         (entries) => {
           entries.forEach(entry => {
@@ -98,7 +94,6 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
         },
         { threshold: 0.1, rootMargin: '0px 0px -50px 0px' }
       );
-
       fadeElements.forEach(el => revealObserver.observe(el));
     </script>
   </body>

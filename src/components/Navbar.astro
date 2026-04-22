@@ -2,54 +2,55 @@
 import logoCompleto from '../assets/img/logo-completo.png';
 ---
 
-<nav id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-500" style="background: transparent;">
-  <div class="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
+<nav id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-500">
+  <div class="max-w-[1440px] mx-auto px-6 md:px-10">
     <div class="flex items-center justify-between h-16 md:h-20">
       <!-- Logo -->
       <a href="#" class="flex-shrink-0 relative z-[70]">
-        <img id="navbar-logo" src={logoCompleto.src} alt="Platonia" class="h-8 md:h-10 w-auto transition-all duration-300" />
+        <img id="navbar-logo" src={logoCompleto.src} alt="Platonia" class="h-8 md:h-9 w-auto transition-all duration-300" />
       </a>
 
       <!-- Desktop Navigation -->
-      <div class="hidden md:flex items-center gap-8">
-        <a href="#servicios" class="nav-link text-sm font-medium text-white/80 hover:text-white transition-colors duration-300">Servicios</a>
-        <a href="#productos" class="nav-link text-sm font-medium text-white/80 hover:text-white transition-colors duration-300">Productos</a>
-        <a href="#por-que-platonia" class="nav-link text-sm font-medium text-white/80 hover:text-white transition-colors duration-300">¿Por qué Platonia?</a>
-        <a href="#asistente" class="nav-link text-sm font-medium text-white/80 hover:text-white transition-colors duration-300">Asistente IA</a>
-        <a href="#nosotros" class="nav-link text-sm font-medium text-white/80 hover:text-white transition-colors duration-300">Nosotros</a>
-        <a href="#contacto" class="nav-link text-sm font-medium text-white/80 hover:text-white transition-colors duration-300">Contacto</a>
-        <a href="#contacto" class="btn-primary !py-2.5 !px-6 !text-sm">Cotiza gratis</a>
+      <div class="hidden md:flex items-center gap-9">
+        <a href="#servicios" class="nav-link text-sm transition-colors duration-300" style="color:var(--ink);">Servicios</a>
+        <a href="#productos" class="nav-link text-sm transition-colors duration-300" style="color:var(--ink);">Productos</a>
+        <a href="#asistente" class="nav-link text-sm transition-colors duration-300" style="color:var(--ink);">
+          <span class="italic-accent" style="font-family:var(--font-display);font-size:1.05em;">Asistente IA</span>
+        </a>
+        <a href="#por-que-platonia" class="nav-link text-sm transition-colors duration-300" style="color:var(--ink);">Por qu&eacute;</a>
+        <a href="#nosotros" class="nav-link text-sm transition-colors duration-300" style="color:var(--ink);">Nosotros</a>
+        <a href="#contacto" class="btn-primary !py-2 !px-5 !text-xs">Cotiza gratis</a>
       </div>
 
       <!-- Mobile Hamburger -->
-      <button id="menu-toggle" class="md:hidden p-3 -mr-2 text-white relative z-[70] touch-manipulation" aria-label="Abrir menú">
+      <button id="menu-toggle" class="md:hidden p-3 -mr-2 relative z-[70] touch-manipulation" aria-label="Abrir menú" style="color:var(--ink);">
         <div id="hamburger" class="w-6 h-5 relative flex flex-col justify-between">
-          <span class="hamburger-line w-full h-0.5 bg-current transition-all duration-300 origin-center"></span>
-          <span class="hamburger-line w-full h-0.5 bg-current transition-all duration-300"></span>
-          <span class="hamburger-line w-full h-0.5 bg-current transition-all duration-300 origin-center"></span>
+          <span class="hamburger-line w-full h-0.5 transition-all duration-300 origin-center" style="background:currentColor;"></span>
+          <span class="hamburger-line w-full h-0.5 transition-all duration-300" style="background:currentColor;"></span>
+          <span class="hamburger-line w-full h-0.5 transition-all duration-300 origin-center" style="background:currentColor;"></span>
         </div>
       </button>
     </div>
   </div>
 </nav>
 
-<!-- Mobile Menu (OUTSIDE nav, absolutely positioned to cover everything) -->
+<!-- Mobile Menu -->
 <div id="mobile-menu" class="mobile-menu-overlay md:hidden" style="display:none;">
-  <!-- Close button top-right -->
   <button id="mobile-close" class="mobile-menu-close touch-manipulation" aria-label="Cerrar menú">
-    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
       <line x1="18" y1="6" x2="6" y2="18"></line>
       <line x1="6" y1="6" x2="18" y2="18"></line>
     </svg>
   </button>
   <div class="mobile-menu-content">
-    <a href="#servicios" class="mobile-link" style="font-family: var(--font-heading);">Servicios</a>
-    <a href="#productos" class="mobile-link" style="font-family: var(--font-heading);">Productos</a>
-    <a href="#por-que-platonia" class="mobile-link" style="font-family: var(--font-heading);">¿Por qué Platonia?</a>
-    <a href="#asistente" class="mobile-link" style="font-family: var(--font-heading);">Asistente IA</a>
-    <a href="#nosotros" class="mobile-link" style="font-family: var(--font-heading);">Nosotros</a>
-    <a href="#contacto" class="mobile-link" style="font-family: var(--font-heading);">Contacto</a>
-    <a href="#contacto" class="btn-primary !py-3.5 !px-10 !text-lg mt-6 touch-manipulation">Cotiza gratis</a>
+    <div class="marginalia mb-8" style="color:var(--sepia);">&Iacute;ndice</div>
+    <a href="#servicios" class="mobile-link">Servicios</a>
+    <a href="#productos" class="mobile-link">Productos</a>
+    <a href="#asistente" class="mobile-link italic-accent">Asistente IA</a>
+    <a href="#por-que-platonia" class="mobile-link">&iquest;Por qu&eacute; Platonia?</a>
+    <a href="#nosotros" class="mobile-link">Nosotros</a>
+    <a href="#contacto" class="mobile-link">Contacto</a>
+    <a href="#contacto" class="btn-primary !py-3.5 !px-10 !text-base mt-6 touch-manipulation">Cotiza gratis</a>
   </div>
 </div>
 
@@ -59,45 +60,22 @@ import logoCompleto from '../assets/img/logo-completo.png';
   const mobileMenu = document.getElementById('mobile-menu');
   const hamburger = document.getElementById('hamburger');
   const navLinks = document.querySelectorAll('.nav-link');
-  const navLogo = document.getElementById('navbar-logo') as HTMLImageElement;
   let menuOpen = false;
 
   function updateNavbar() {
     if (!navbar) return;
-    const scrolled = window.scrollY > 50;
+    const scrolled = window.scrollY > 30;
 
     if (scrolled && !menuOpen) {
-      navbar.style.background = 'rgba(255, 255, 255, 0.85)';
-      navbar.style.backdropFilter = 'blur(12px)';
-      navbar.style.webkitBackdropFilter = 'blur(12px)';
-      navbar.style.boxShadow = '0 1px 20px rgba(107, 33, 168, 0.06)';
-      navLinks.forEach(link => {
-        link.classList.remove('text-white/80');
-        link.classList.add('text-gray-600');
-        link.classList.remove('hover:text-white');
-        link.classList.add('hover:text-primary');
-      });
-      if (navLogo) navLogo.style.filter = '';
-      if (menuToggle) {
-        menuToggle.classList.remove('text-white');
-        menuToggle.classList.add('text-gray-800');
-      }
+      navbar.style.background = 'rgba(250, 247, 240, 0.88)';
+      (navbar.style as any).backdropFilter = 'blur(14px)';
+      (navbar.style as any).webkitBackdropFilter = 'blur(14px)';
+      navbar.style.borderBottom = '1px solid rgba(26, 22, 20, 0.08)';
     } else if (!menuOpen) {
       navbar.style.background = 'transparent';
-      navbar.style.backdropFilter = 'none';
-      navbar.style.webkitBackdropFilter = 'none';
-      navbar.style.boxShadow = 'none';
-      navLinks.forEach(link => {
-        link.classList.add('text-white/80');
-        link.classList.remove('text-gray-600');
-        link.classList.add('hover:text-white');
-        link.classList.remove('hover:text-primary');
-      });
-      if (navLogo) navLogo.style.filter = 'brightness(0) invert(1)';
-      if (menuToggle) {
-        menuToggle.classList.add('text-white');
-        menuToggle.classList.remove('text-gray-800');
-      }
+      (navbar.style as any).backdropFilter = 'none';
+      (navbar.style as any).webkitBackdropFilter = 'none';
+      navbar.style.borderBottom = 'none';
     }
   }
 
@@ -111,17 +89,6 @@ import logoCompleto from '../assets/img/logo-completo.png';
       hamburger?.classList.add('open');
       document.body.style.overflow = 'hidden';
       document.documentElement.style.overflow = 'hidden';
-      // Force white elements when menu open
-      if (menuToggle) {
-        menuToggle.classList.add('text-white');
-        menuToggle.classList.remove('text-gray-800');
-      }
-      if (navLogo) navLogo.style.filter = 'brightness(0) invert(1)';
-      if (navbar) {
-        navbar.style.background = 'transparent';
-        navbar.style.backdropFilter = 'none';
-        navbar.style.boxShadow = 'none';
-      }
     } else {
       closeMenu();
     }
@@ -139,8 +106,6 @@ import logoCompleto from '../assets/img/logo-completo.png';
   document.querySelectorAll('.mobile-link').forEach(link => {
     link.addEventListener('click', closeMenu);
   });
-
-  // Close button inside menu
   document.getElementById('mobile-close')?.addEventListener('click', closeMenu);
 
   const sections = document.querySelectorAll('section[id]');
@@ -150,11 +115,8 @@ import logoCompleto from '../assets/img/logo-completo.png';
         if (entry.isIntersecting) {
           navLinks.forEach(link => {
             const isActive = link.getAttribute('href') === `#${entry.target.id}`;
-            if (isActive) {
-              link.classList.add('!font-bold');
-            } else {
-              link.classList.remove('!font-bold');
-            }
+            if (isActive) link.classList.add('!font-semibold');
+            else link.classList.remove('!font-semibold');
           });
         }
       });
@@ -175,7 +137,14 @@ import logoCompleto from '../assets/img/logo-completo.png';
     transform: rotate(-45deg) translate(6px, -6px);
   }
 
-  /* Mobile menu - uses position fixed with explicit dimensions for GAS iframe compatibility */
+  .nav-link {
+    position: relative;
+    transition: opacity 0.3s;
+  }
+  .nav-link:hover {
+    opacity: 0.6;
+  }
+
   .mobile-menu-overlay {
     position: fixed;
     top: 0;
@@ -184,56 +153,57 @@ import logoCompleto from '../assets/img/logo-completo.png';
     height: 100vh;
     height: 100dvh;
     z-index: 60;
-    background: rgba(15, 10, 26, 0.97);
+    background: var(--cream);
     display: flex;
     align-items: center;
     justify-content: center;
-    -webkit-backdrop-filter: blur(20px);
-    backdrop-filter: blur(20px);
+    padding: 2rem;
   }
 
   .mobile-menu-content {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 1.5rem;
-    padding: 2rem;
+    gap: 1.25rem;
     width: 100%;
   }
 
   .mobile-menu-content .mobile-link {
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: rgba(255, 255, 255, 0.9);
+    font-family: var(--font-display);
+    font-size: 2rem;
+    font-weight: 400;
+    color: var(--ink);
     text-decoration: none;
-    padding: 0.5rem 1rem;
+    padding: 0.25rem 1rem;
     transition: color 0.2s;
     -webkit-tap-highlight-color: transparent;
     touch-action: manipulation;
+    letter-spacing: -0.02em;
   }
 
-  .mobile-menu-content .mobile-link:hover,
   .mobile-menu-content .mobile-link:active {
-    color: #A855F7;
+    color: var(--plum);
   }
 
   .mobile-menu-close {
     position: absolute;
-    top: 1rem;
-    right: 1rem;
-    width: 48px;
-    height: 48px;
+    top: 1.5rem;
+    right: 1.5rem;
+    width: 44px;
+    height: 44px;
     display: flex;
     align-items: center;
     justify-content: center;
-    background: rgba(255, 255, 255, 0.08);
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    border-radius: 12px;
+    background: transparent;
+    border: 1px solid rgba(26, 22, 20, 0.2);
+    border-radius: 50%;
     cursor: pointer;
+    color: var(--ink);
     z-index: 65;
     -webkit-tap-highlight-color: transparent;
+    transition: background 0.3s;
   }
   .mobile-menu-close:active {
-    background: rgba(168, 85, 247, 0.3);
+    background: rgba(26, 22, 20, 0.08);
   }
 </style>
