@@ -8,6 +8,10 @@ import { sendChatLeadNotification } from '../../lib/email';
 
 interface ChatMsg { role: 'user' | 'assistant'; content: string; }
 
+function capitalize(s: string): string {
+  return s.split(/\s+/).map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()).join(' ');
+}
+
 // Extract contact info from full conversation text
 function extractContactInfo(messages: ChatMsg[]) {
   const userText = messages
@@ -20,27 +24,76 @@ function extractContactInfo(messages: ChatMsg[]) {
   const email = emailMatch ? emailMatch[0].toLowerCase() : null;
 
   // Phone (Chilean format friendly)
-  const phoneMatch = userText.match(/(?:\+?56\s*)?(?:9\s*)?(\d[\d\s.-]{7,12}\d)/);
-  const telefono = phoneMatch ? phoneMatch[0].replace(/\s/g, '').slice(0, 20) : null;
+  const phoneMatch = userText.match(/(?:\+?56[\s\-.]*)?(?:9[\s\-.]*)?\d{4}[\s\-.]*\d{4}/);
+  const telefono = phoneMatch ? phoneMatch[0].replace(/[\s\-.]/g, '').slice(0, 20) : null;
 
-  return { email, telefono };
+  // Name extraction - multiple strategies
+  let nombre: string | null = null;
+
+  // Strategy 1: User explicitly says their name in any message
+  const nameMatch = userText.match(/(?:me\s+llamo|mi\s+nombre\s+es|soy)\s+([A-ZÁÉÍÓÚÑa-záéíóúñ]+(?:\s+[A-ZÁÉÍÓÚÑa-záéíóúñ]+)?)/i);
+  if (nameMatch) {
+    nombre = capitalize(nameMatch[1].trim());
+  }
+
+  // Strategy 2: Bot asked "¿cómo te llamas?" → next user message is the name
+  if (!nombre) {
+    for (let i = 0; i < messages.length - 1; i++) {
+      const msg = messages[i];
+      const next = messages[i + 1];
+      if (msg.role === 'assistant' && next?.role === 'user') {
+        if (/c[óo]mo\s+te\s+llamas|tu\s+nombre|cu[áa]l\s+es\s+tu\s+nombre/i.test(msg.content)) {
+          const candidate = next.content.trim();
+          // Should be just a name (short, only letters)
+          if (candidate.length < 50 && /^[A-ZÁÉÍÓÚÑa-záéíóúñ\s]+$/.test(candidate)) {
+            const words = candidate.split(/\s+/).filter(w => w.length > 1);
+            if (words.length >= 1 && words.length <= 3) {
+              nombre = capitalize(words.slice(0, 2).join(' '));
+              break;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  // Empresa extraction
+  let empresa: string | null = null;
+  const empresaPatterns = [
+    /(?:mi\s+empresa\s+(?:se\s+llama\s+|es\s+))([^\.,;\n]+)/i,
+    /(?:trabajo\s+en\s+)([A-ZÁÉÍÓÚÑ][^\.,;\n]{2,60})/,
+    /(?:tengo\s+(?:una|un)\s+(?:empresa|negocio|tienda|pyme)\s+(?:de\s+|que\s+se\s+llama\s+)?)([^\.,;\n]+)/i,
+  ];
+  for (const pattern of empresaPatterns) {
+    const m = userText.match(pattern);
+    if (m && m[1]) {
+      empresa = m[1].trim().slice(0, 100);
+      break;
+    }
+  }
+
+  return { email, telefono, nombre, empresa };
 }
 
 async function saveConversation(sessionId: string, messages: ChatMsg[]) {
   try {
     const supabase = getSupabaseAdmin();
-    const { email, telefono } = extractContactInfo(messages);
+    const { email, telefono, nombre, empresa } = extractContactInfo(messages);
 
     const userMessages = messages.filter(m => m.role === 'user');
     if (userMessages.length === 0) return;
 
     // Check if conversation already exists for this session
-    const { data: existing } = await supabase
+    const { data: existing, error: selectErr } = await supabase
       .from('leads')
       .select('id, email, telefono, notas')
       .eq('source', 'chatbot')
       .filter('conversacion->>session_id', 'eq', sessionId)
       .maybeSingle();
+
+    if (selectErr) {
+      console.error('[chat] Select error:', selectErr.message);
+    }
 
     const conversacion = {
       session_id: sessionId,
@@ -54,16 +107,18 @@ async function saveConversation(sessionId: string, messages: ChatMsg[]) {
     const payload: any = {
       source: 'chatbot',
       conversacion,
-      email: email || null,
-      telefono: telefono || null,
     };
+    // Only set fields when we have a value, so we don't overwrite previous captures with null
+    if (email) payload.email = email;
+    if (telefono) payload.telefono = telefono;
+    if (nombre) payload.nombre = nombre;
+    if (empresa) payload.empresa = empresa;
     if (desafio) payload.desafio = desafio;
 
     let isNewLead = false;
 
     if (existing && (existing as any).id) {
       const prev = existing as any;
-      // Detect if this update is the first time we have email or phone
       const hadContact = !!(prev.email || prev.telefono);
       const hasContactNow = !!(email || telefono);
       const notifiedAlready = (prev.notas || '').includes('email_sent');
@@ -73,18 +128,26 @@ async function saveConversation(sessionId: string, messages: ChatMsg[]) {
         payload.notas = (prev.notas ? prev.notas + ';' : '') + 'email_sent';
       }
 
-      await supabase.from('leads').update(payload).eq('id', prev.id);
+      const { error: updErr } = await supabase.from('leads').update(payload).eq('id', prev.id);
+      if (updErr) {
+        console.error('[chat] Update error:', updErr.message);
+      } else {
+        console.log(`[chat] Updated session ${sessionId} (${messages.length} msgs)`);
+      }
     } else {
       payload.estado = 'nuevo';
-      // If this is the first save AND already has contact info, notify
       if (email || telefono) {
         isNewLead = true;
         payload.notas = 'email_sent';
       }
-      await supabase.from('leads').insert(payload);
+      const { error: insErr } = await supabase.from('leads').insert(payload);
+      if (insErr) {
+        console.error('[chat] Insert error:', insErr.message);
+      } else {
+        console.log(`[chat] Inserted new session ${sessionId} (${messages.length} msgs)`);
+      }
     }
 
-    // Send notification email if first capture of contact info
     if (isNewLead) {
       sendChatLeadNotification({
         email,
@@ -95,7 +158,7 @@ async function saveConversation(sessionId: string, messages: ChatMsg[]) {
       }).catch(() => {});
     }
   } catch (err: any) {
-    console.error('[chat] Error saving conversation:', err.message);
+    console.error('[chat] Error saving conversation:', err?.message || err);
   }
 }
 
@@ -150,15 +213,21 @@ export const POST: APIRoute = async ({ request }) => {
               );
             }
           }
-          controller.enqueue(new TextEncoder().encode('data: [DONE]\n\n'));
-          controller.close();
 
-          // Save conversation after streaming completes (don't await - fire and forget)
+          // SAVE conversation BEFORE closing the stream (otherwise on Vercel
+          // the serverless function may terminate before the save completes)
           const fullMessages: ChatMsg[] = [
             ...messages,
             { role: 'assistant', content: fullResponse },
           ];
-          saveConversation(sessionId, fullMessages).catch(() => {});
+          try {
+            await saveConversation(sessionId, fullMessages);
+          } catch (saveErr: any) {
+            console.error('[chat] saveConversation failed:', saveErr?.message);
+          }
+
+          controller.enqueue(new TextEncoder().encode('data: [DONE]\n\n'));
+          controller.close();
         } catch (err) {
           controller.enqueue(
             new TextEncoder().encode(`data: ${JSON.stringify({ error: 'Error en la generación' })}\n\n`)
