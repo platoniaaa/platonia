@@ -151,6 +151,14 @@
   let userMsgCount = 0;
   let cooldownActive = false;
   const MAX_MESSAGES = 20;
+
+  // Generate or retrieve a session ID for this chat
+  const SESSION_KEY = 'platonia_chat_session';
+  let sessionId = sessionStorage.getItem(SESSION_KEY);
+  if (!sessionId) {
+    sessionId = `s-${Date.now()}-${Math.random().toString(36).slice(2, 10)}`;
+    sessionStorage.setItem(SESSION_KEY, sessionId);
+  }
   const WELCOME = '¡Hola! Soy el asistente digital de Platonia. Cuéntame sobre tu negocio y qué desafío digital enfrentas, y te ayudaré a encontrar la mejor solución.';
 
   const isMobile = window.matchMedia('(max-width: 640px)').matches;
@@ -234,7 +242,7 @@
       const res = await fetch('/api/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ messages }),
+        body: JSON.stringify({ messages, sessionId }),
       });
 
       if (!res.ok) {

@@ -150,23 +150,55 @@ const serviceOptions = [
   const successMsg = document.getElementById('form-success')!;
   const errorMsg = document.getElementById('form-error')!;
 
-  form.addEventListener('submit', (e) => {
+  form.addEventListener('submit', async (e) => {
     e.preventDefault();
     const formData = new FormData(form);
-    if (!formData.get('nombre') || !formData.get('email') || !formData.get('servicio') || !formData.get('dolor')) {
+    const payload = {
+      nombre: formData.get('nombre'),
+      email: formData.get('email'),
+      telefono: formData.get('telefono') || '',
+      empresa: formData.get('empresa') || '',
+      servicio: formData.get('servicio'),
+      dolor: formData.get('dolor'),
+    };
+
+    if (!payload.nombre || !payload.email || !payload.servicio || !payload.dolor) {
+      errorMsg.querySelector('p')!.textContent = 'Por favor completa todos los campos obligatorios.';
       errorMsg.classList.remove('hidden');
       setTimeout(() => errorMsg.classList.add('hidden'), 3000);
       return;
     }
+
     const submitBtn = form.querySelector('button[type="submit"]') as HTMLButtonElement;
+    const originalHTML = submitBtn.innerHTML;
     submitBtn.disabled = true;
     submitBtn.innerHTML = 'Enviando...';
 
-    setTimeout(() => {
+    try {
+      const res = await fetch('/api/submit-form', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        throw new Error(data.error || 'send_failed');
+      }
+
       form.classList.add('hidden');
       successMsg.classList.remove('hidden');
       successMsg.parentElement?.classList.remove('hidden');
-    }, 1200);
+    } catch (err: any) {
+      submitBtn.disabled = false;
+      submitBtn.innerHTML = originalHTML;
+      const msg = err.message === 'invalid_email'
+        ? 'Por favor ingresa un email válido.'
+        : 'Hubo un problema al enviar. Inténtalo de nuevo o escríbenos por WhatsApp.';
+      errorMsg.querySelector('p')!.textContent = msg;
+      errorMsg.classList.remove('hidden');
+      setTimeout(() => errorMsg.classList.add('hidden'), 4000);
+    }
   });
 </script>
 
