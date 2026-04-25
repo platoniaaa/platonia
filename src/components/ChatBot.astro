@@ -344,14 +344,23 @@
     }
   });
 
-  // Auto-expand on focus
+  // Open fullscreen on any click/tap inside the chat container (when not yet fullscreen)
+  chatContainer.addEventListener('click', (e) => {
+    if (isFullscreen) return;
+    openFullscreen();
+  });
+  // Also on focus (keyboard/tab navigation)
   inputEl.addEventListener('focus', openFullscreen);
-  // Also on click of the input (in case focus is skipped)
-  inputEl.addEventListener('click', openFullscreen);
-  // Explicit expand button
-  expandBtn.addEventListener('click', openFullscreen);
-  // Close button
-  closeBtn.addEventListener('click', closeFullscreen);
+  // Explicit expand button still works
+  expandBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    openFullscreen();
+  });
+  // Close button (stop propagation so it doesn't bubble and re-open)
+  closeBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    closeFullscreen();
+  });
   // ESC to close
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape' && isFullscreen) closeFullscreen();
@@ -387,7 +396,15 @@
     flex-direction: column;
     position: relative;
     box-shadow: 0 20px 80px rgba(107, 33, 168, 0.25);
-    transition: border-radius 0.3s ease;
+    transition: all 0.3s ease;
+    cursor: pointer;
+  }
+  .chat-box:not(.fullscreen):hover {
+    border-color: rgba(168, 85, 247, 0.4);
+    box-shadow: 0 24px 100px rgba(107, 33, 168, 0.35);
+  }
+  .chat-box.fullscreen {
+    cursor: default;
   }
   @media (max-width: 640px) {
     .chat-box {
