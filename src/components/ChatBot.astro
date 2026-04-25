@@ -106,26 +106,34 @@
   let isFullscreen = false;
   let originalParent: HTMLElement | null = null;
   let originalNextSibling: ChildNode | null = null;
+  let savedScrollY = 0;
 
   function openFullscreen() {
     if (isFullscreen) return;
     isFullscreen = true;
 
-    // Preserve space so the page layout doesn't jump
+    // Save current scroll position BEFORE doing anything else
+    savedScrollY = window.scrollY || window.pageYOffset || document.documentElement.scrollTop || 0;
+
+    // Preserve the space the chat occupied so layout doesn't jump when restored
     const rect = chatContainer.getBoundingClientRect();
     chatPlaceholder.style.display = 'block';
     chatPlaceholder.style.height = rect.height + 'px';
 
     // Save original location and move chat to body
-    // (so position:fixed is relative to viewport, not the parent's transform)
     originalParent = chatContainer.parentElement;
     originalNextSibling = chatContainer.nextSibling;
     document.body.appendChild(chatContainer);
 
     chatContainer.classList.add('fullscreen');
     document.body.classList.add('chat-fullscreen-open');
-    document.body.style.overflow = 'hidden';
-    document.documentElement.style.overflow = 'hidden';
+
+    // Lock scroll using position:fixed pattern (preserves scroll position)
+    document.body.style.position = 'fixed';
+    document.body.style.top = `-${savedScrollY}px`;
+    document.body.style.left = '0';
+    document.body.style.right = '0';
+    document.body.style.width = '100%';
 
     expandBtn.style.display = 'none';
     closeBtn.style.display = 'flex';
@@ -155,8 +163,16 @@
 
     chatPlaceholder.style.display = 'none';
     document.body.classList.remove('chat-fullscreen-open');
-    document.body.style.overflow = '';
-    document.documentElement.style.overflow = '';
+
+    // Unlock scroll
+    document.body.style.position = '';
+    document.body.style.top = '';
+    document.body.style.left = '';
+    document.body.style.right = '';
+    document.body.style.width = '';
+
+    // Restore scroll position to where the user was before opening the chat
+    window.scrollTo(0, savedScrollY);
 
     expandBtn.style.display = 'flex';
     closeBtn.style.display = 'none';
@@ -524,9 +540,9 @@
     display: none !important;
   }
 
+  /* body lock is handled via inline position:fixed in JS to preserve scroll */
   body.chat-fullscreen-open {
-    overflow: hidden !important;
-    height: 100vh;
+    overscroll-behavior: contain;
   }
 
   /* Expand / Close buttons */
