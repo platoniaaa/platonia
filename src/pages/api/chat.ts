@@ -4,6 +4,7 @@ import type { APIRoute } from 'astro';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import { SYSTEM_PROMPT } from '../../lib/system-prompt';
 import { getSupabaseAdmin } from '../../lib/supabase';
+import { sendChatLeadNotification } from '../../lib/email';
 
 interface ChatMsg { role: 'user' | 'assistant'; content: string; }
 
@@ -30,14 +31,13 @@ async function saveConversation(sessionId: string, messages: ChatMsg[]) {
     const supabase = getSupabaseAdmin();
     const { email, telefono } = extractContactInfo(messages);
 
-    // Only save if there's at least one user message
     const userMessages = messages.filter(m => m.role === 'user');
     if (userMessages.length === 0) return;
 
     // Check if conversation already exists for this session
     const { data: existing } = await supabase
       .from('leads')
-      .select('id')
+      .select('id, email, telefono, notas')
       .eq('source', 'chatbot')
       .filter('conversacion->>session_id', 'eq', sessionId)
       .maybeSingle();
@@ -49,32 +49,53 @@ async function saveConversation(sessionId: string, messages: ChatMsg[]) {
       last_updated: new Date().toISOString(),
     };
 
+    const desafio = userMessages[0] ? userMessages[0].content.slice(0, 500) : null;
+
     const payload: any = {
       source: 'chatbot',
       conversacion,
       email: email || null,
       telefono: telefono || null,
     };
+    if (desafio) payload.desafio = desafio;
 
-    // First user message as desafio
-    if (userMessages[0]) {
-      payload.desafio = userMessages[0].content.slice(0, 500);
-    }
+    let isNewLead = false;
 
     if (existing && (existing as any).id) {
-      // Update existing conversation
-      await supabase
-        .from('leads')
-        .update(payload)
-        .eq('id', (existing as any).id);
+      const prev = existing as any;
+      // Detect if this update is the first time we have email or phone
+      const hadContact = !!(prev.email || prev.telefono);
+      const hasContactNow = !!(email || telefono);
+      const notifiedAlready = (prev.notas || '').includes('email_sent');
+
+      if (hasContactNow && !hadContact && !notifiedAlready) {
+        isNewLead = true;
+        payload.notas = (prev.notas ? prev.notas + ';' : '') + 'email_sent';
+      }
+
+      await supabase.from('leads').update(payload).eq('id', prev.id);
     } else {
-      // New conversation
       payload.estado = 'nuevo';
+      // If this is the first save AND already has contact info, notify
+      if (email || telefono) {
+        isNewLead = true;
+        payload.notas = 'email_sent';
+      }
       await supabase.from('leads').insert(payload);
+    }
+
+    // Send notification email if first capture of contact info
+    if (isNewLead) {
+      sendChatLeadNotification({
+        email,
+        telefono,
+        desafio,
+        conversation: messages,
+        sessionId,
+      }).catch(() => {});
     }
   } catch (err: any) {
     console.error('[chat] Error saving conversation:', err.message);
-    // Don't fail the request if save fails
   }
 }
 

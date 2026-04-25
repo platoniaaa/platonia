@@ -2,6 +2,7 @@ export const prerender = false;
 
 import type { APIRoute } from 'astro';
 import { getSupabaseAdmin } from '../../lib/supabase';
+import { sendFormLeadNotification } from '../../lib/email';
 
 export const POST: APIRoute = async ({ request }) => {
   try {
@@ -50,6 +51,17 @@ export const POST: APIRoute = async ({ request }) => {
     }
 
     console.log(`[form] New lead saved: ${email}`);
+
+    // Send email notification (don't await - fire and forget)
+    sendFormLeadNotification({
+      nombre,
+      email,
+      telefono: telefono || undefined,
+      empresa: empresa || undefined,
+      servicio,
+      desafio: dolor,
+    }).catch(() => {});
+
     return new Response(
       JSON.stringify({ success: true }),
       { status: 200, headers: { 'Content-Type': 'application/json' } }
