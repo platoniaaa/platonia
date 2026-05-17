@@ -52,19 +52,43 @@
       </div>
     </div>
 
-    <!-- Testimonial statement -->
+    <!-- Client logos -->
     <div class="hero-reveal hero-reveal-5 pt-8 md:pt-10 border-t" style="border-color:rgba(216,180,254,0.15);">
-      <div class="flex items-start gap-4 md:gap-6">
-        <span class="font-display text-4xl md:text-6xl leading-none flex-shrink-0" style="color:var(--lilac);font-style:italic;margin-top:-0.1em;">&ldquo;</span>
-        <div class="flex-1">
-          <p class="font-display text-xl md:text-3xl leading-tight" style="color:var(--cream);font-weight:400;letter-spacing:-0.02em;">
-            M&aacute;s de <span class="italic-accent">20 pymes chilenas</span> ya est&aacute;n digitalizadas con Platonia.
-          </p>
-          <div class="marginalia mt-3 md:mt-4 uppercase tracking-[0.2em]" style="color:var(--text-muted);">
-            &mdash; Proyectos entregados desde 2021
-          </div>
+      <div class="marginalia mb-6 md:mb-8 uppercase tracking-[0.2em]" style="color:var(--text-muted);">
+        &mdash; Empresas que conf&iacute;an en nosotros
+      </div>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12 items-center">
+        <div class="client-logo flex items-center justify-center">
+          <img src="/img/clientes/arrimaq.png" alt="Arrimaq" loading="lazy" />
+        </div>
+        <div class="client-logo flex items-center justify-center">
+          <img src="/img/clientes/servipag.png" alt="Servipag" loading="lazy" />
+        </div>
+        <div class="client-logo flex items-center justify-center">
+          <img src="/img/clientes/curifor.png" alt="Curifor" loading="lazy" />
+        </div>
+        <div class="client-logo flex items-center justify-center">
+          <img src="/img/clientes/procesos360.png" alt="Procesos 360" loading="lazy" />
         </div>
       </div>
     </div>
   </div>
+
+  <style>
+    .client-logo img {
+      max-height: 56px;
+      width: auto;
+      max-width: 100%;
+      object-fit: contain;
+      filter: brightness(0) invert(1) opacity(0.65);
+      transition: filter 0.3s ease, transform 0.3s ease;
+    }
+    .client-logo:hover img {
+      filter: brightness(0) invert(1) opacity(1);
+      transform: scale(1.05);
+    }
+    @media (max-width: 768px) {
+      .client-logo img { max-height: 44px; }
+    }
+  </style>
 </section>
