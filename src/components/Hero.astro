@@ -1,7 +1,8 @@
 ---
 ---
 
-<section id="hero" class="relative min-h-[100svh] flex items-center overflow-hidden" style="background:var(--night);">
+<div id="hero-scroll-wrap" class="relative" style="background:var(--night);">
+<section id="hero" class="hero-sticky relative flex items-center overflow-hidden" style="background:var(--night);">
 
   <!-- Violet aurora mesh background -->
   <div class="absolute inset-0 violet-mesh"></div>
@@ -74,6 +75,21 @@
   </div>
 
   <style>
+    #hero-scroll-wrap {
+      /* Scroll length available for the video to play. 2.4 viewports gives the
+         user plenty of room to see the whole animation before the next section. */
+      height: 240svh;
+    }
+    .hero-sticky {
+      position: sticky;
+      top: 0;
+      height: 100svh;
+    }
+    @media (max-width: 1023px) {
+      /* Slightly shorter on tablet/mobile so the sticky pin doesn't feel endless */
+      #hero-scroll-wrap { height: 180svh; }
+    }
+
     .hero-video-wrapper {
       position: relative;
       width: 100%;
@@ -109,8 +125,8 @@
   <script is:inline>
     (function () {
       const video = document.getElementById('hero-video');
-      const section = document.getElementById('hero');
-      if (!video || !section) return;
+      const wrap = document.getElementById('hero-scroll-wrap');
+      if (!video || !wrap) return;
 
       let duration = 0;
       let ticking = false;
@@ -118,11 +134,12 @@
       function updateFromScroll() {
         ticking = false;
         if (!duration) return;
-        const rect = section.getBoundingClientRect();
-        const sectionHeight = section.offsetHeight || 1;
-        // Progress: 0 when section's top hits viewport top, 1 when section has scrolled fully past
+        const rect = wrap.getBoundingClientRect();
+        const viewport = window.innerHeight || 1;
+        // Total scroll distance available inside the sticky wrapper
+        const total = Math.max(1, wrap.offsetHeight - viewport);
         const scrolled = -rect.top;
-        const progress = Math.max(0, Math.min(1, scrolled / sectionHeight));
+        const progress = Math.max(0, Math.min(1, scrolled / total));
         const target = duration * progress;
         // Smooth scrubbing: only update if difference is meaningful
         if (Math.abs(video.currentTime - target) > 0.02) {
@@ -162,3 +179,4 @@
     })();
   </script>
 </section>
+</div>
