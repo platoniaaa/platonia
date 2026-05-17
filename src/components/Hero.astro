@@ -41,14 +41,17 @@
           <video
             id="hero-video"
             class="hero-video"
-            src="/video/hero-busto.mp4"
+            poster="/video/hero-busto-poster.jpg"
             muted
             playsinline
+            webkit-playsinline="true"
             preload="auto"
             disablepictureinpicture
             disableremoteplayback
             aria-hidden="true"
-          ></video>
+          >
+            <source src="/video/hero-busto.mp4" type="video/mp4" />
+          </video>
         </div>
       </div>
     </div>
@@ -88,12 +91,13 @@
       height: 100%;
       object-fit: cover;
       display: block;
+      background: transparent;
     }
     @media (max-width: 1023px) {
       .hero-video-wrapper { max-width: 340px; }
     }
     @media (max-width: 640px) {
-      .hero-video-wrapper { max-width: 260px; }
+      .hero-video-wrapper { max-width: 240px; }
     }
   </style>
 
@@ -105,26 +109,30 @@
 
       let duration = 0;
       let ticking = false;
+      let primed = false;
+
+      // iOS Safari refuses to decode/seek a video until the user interacts
+      // with the page. To force it to render the first frame, we attempt a
+      // muted play() then immediate pause(). The poster shows in the meantime.
+      function primeOnFirstGesture() {
+        if (primed) return;
+        primed = true;
+        const tryPlay = video.play();
+        if (tryPlay && typeof tryPlay.then === 'function') {
+          tryPlay.then(() => video.pause()).catch(() => {});
+        }
+        updateFromScroll();
+      }
 
       function updateFromScroll() {
         ticking = false;
         if (!duration) return;
         const rect = videoWrap.getBoundingClientRect();
-        const viewport = window.innerHeight || 1;
-        // We want the video to be fully played by the time the video block has
-        // scrolled ~half way up the viewport (so the tongue moment happens while
-        // the bust is still clearly visible, before it slides off the top).
-        // initialTop = where the video block sits when scrollY = 0
-        // currentTop = rect.top (changes with scroll)
-        // scrolled = how many pixels the video block has moved up
         const initialTop = rect.top + window.scrollY;
         const scrolled = window.scrollY;
-        // Map scroll so the video completes well before the block reaches the
-        // top of the viewport — gives the user time to actually see the tongue.
         const range = Math.max(1, initialTop * 0.6);
         const progress = Math.max(0, Math.min(1, scrolled / range));
         const target = duration * progress;
-        // Smooth scrubbing: only update if difference is meaningful
         if (Math.abs(video.currentTime - target) > 0.02) {
           try {
             if (typeof video.fastSeek === 'function') {
@@ -145,6 +153,8 @@
 
       function onMetadataReady() {
         duration = video.duration || 0;
+        // Trigger an initial render so the first frame appears immediately
+        try { video.currentTime = 0.01; } catch (e) {}
         updateFromScroll();
       }
 
@@ -154,8 +164,14 @@
         video.addEventListener('loadedmetadata', onMetadataReady, { once: true });
       }
 
+      // Force iOS to initialize the video pipeline on first user interaction
+      ['touchstart', 'touchend', 'click', 'scroll'].forEach((evt) => {
+        window.addEventListener(evt, primeOnFirstGesture, { once: true, passive: true });
+      });
+
       window.addEventListener('scroll', onScroll, { passive: true });
       window.addEventListener('resize', onScroll, { passive: true });
+      window.addEventListener('orientationchange', onScroll, { passive: true });
 
       // Initial sync
       requestAnimationFrame(updateFromScroll);
