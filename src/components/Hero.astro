@@ -26,9 +26,19 @@
     </div>
 
     <!-- Headline + video grid -->
-    <div class="grid grid-cols-12 gap-3 md:gap-8 lg:gap-10 items-center mb-8 md:mb-10">
-      <!-- VIDEO: left on mobile, right on desktop -->
-      <div class="hero-reveal hero-reveal-2 col-span-5 lg:col-span-5 lg:order-2 flex justify-start lg:justify-end">
+    <div class="hero-headline-row grid grid-cols-12 gap-3 md:gap-8 lg:gap-10 items-center mb-8 md:mb-10">
+      <!-- TEXT (left, can overflow over video on mobile) -->
+      <div class="col-span-7 lg:col-span-7 hero-headline-cell">
+        <h1 class="hero-reveal hero-reveal-2 hero-headline">
+          Tecnolog&iacute;a
+          <span class="italic-accent">inteligente,</span>
+          <br />
+          a precios de pyme.
+        </h1>
+      </div>
+
+      <!-- VIDEO (right on all sizes) -->
+      <div class="hero-reveal hero-reveal-2 col-span-5 lg:col-span-5 flex justify-end">
         <div class="hero-video-wrapper">
           <video
             id="hero-video"
@@ -45,16 +55,6 @@
             <source src="/video/hero-busto.mp4" type="video/mp4" />
           </video>
         </div>
-      </div>
-
-      <!-- TEXT: right on mobile, left on desktop -->
-      <div class="col-span-7 lg:col-span-7 lg:order-1">
-        <h1 class="hero-reveal hero-reveal-2 hero-headline">
-          Tecnolog&iacute;a
-          <span class="italic-accent">inteligente,</span>
-          <br />
-          a precios de pyme.
-        </h1>
       </div>
     </div>
 
@@ -96,8 +96,9 @@
       background: transparent;
     }
 
-    /* Headline default uses display-xl scale; on small screens (side-by-side
-       layout) we need a tighter scale so it fits in 7/12 cols. */
+    /* Headline uses the same large display-xl scale on all sizes. On phones
+       the words can extend past the 7-col cell and overlap the video — the
+       headline sits above (z-index) so the type still reads clearly. */
     .hero-headline {
       font-family: var(--font-display);
       font-weight: 500;
@@ -105,20 +106,21 @@
       line-height: 0.92;
       letter-spacing: -0.04em;
       color: var(--cream);
+      /* Let words extend past the column when they're wider than its width */
+      white-space: nowrap;
+    }
+    .hero-headline-cell {
+      position: relative;
+      z-index: 2;
     }
     @media (max-width: 1023px) {
-      .hero-video-wrapper { max-width: 220px; }
-      .hero-headline {
-        font-size: clamp(1.6rem, 6vw, 3rem);
-        line-height: 1.05;
-      }
+      .hero-video-wrapper { max-width: 280px; }
     }
     @media (max-width: 640px) {
-      .hero-video-wrapper { max-width: 160px; }
+      .hero-video-wrapper { max-width: 200px; }
       .hero-headline {
-        font-size: clamp(1.35rem, 6.5vw, 2.25rem);
-        line-height: 1.05;
-        letter-spacing: -0.02em;
+        /* Slightly tighter letter-spacing helps fit "a precios de pyme." */
+        letter-spacing: -0.035em;
       }
     }
   </style>
@@ -129,41 +131,8 @@
       const videoWrap = video ? video.closest('.hero-video-wrapper') : null;
       if (!video || !videoWrap) return;
 
-      // Mobile = scroll-scrubbing is unreliable (seek is slower than swipe).
-      // On those screens we just auto-play the clip once it scrolls into view.
-      const isMobileLayout = window.matchMedia('(max-width: 1023px)').matches;
-
-      // ------ MOBILE: autoplay on visibility -----------------------------
-      if (isMobileLayout) {
-        let played = false;
-        const playWhenReady = () => {
-          if (played) return;
-          played = true;
-          const p = video.play();
-          if (p && typeof p.then === 'function') p.catch(() => { played = false; });
-        };
-        if ('IntersectionObserver' in window) {
-          const io = new IntersectionObserver((entries) => {
-            entries.forEach((entry) => {
-              if (entry.isIntersecting) {
-                playWhenReady();
-                io.disconnect();
-              }
-            });
-          }, { threshold: 0.25 });
-          io.observe(video);
-        } else {
-          // Older browsers: just try to play immediately
-          playWhenReady();
-        }
-        // iOS sometimes still blocks autoplay until first gesture
-        ['touchstart', 'click', 'scroll'].forEach((evt) => {
-          window.addEventListener(evt, playWhenReady, { once: true, passive: true });
-        });
-        return;
-      }
-
-      // ------ DESKTOP: scroll-scrubbing ----------------------------------
+      // Scroll-scrubbing on every device. The video is encoded with one
+      // keyframe per frame (-g 1) so seeking via currentTime is fast.
       let duration = 0;
       let ticking = false;
       let primed = false;
