@@ -61,7 +61,7 @@
         <div class="client-card">
           <img src="/img/clientes/arrimaq.png" alt="Arrimaq" loading="lazy" />
         </div>
-        <div class="client-card">
+        <div class="client-card client-card--tall">
           <img src="/img/clientes/servipag.png" alt="Servipag" loading="lazy" />
         </div>
         <div class="client-card">
@@ -96,9 +96,13 @@
       max-width: 100%;
       object-fit: contain;
     }
+    .client-card--tall img {
+      max-height: 72px;
+    }
     @media (max-width: 768px) {
       .client-card { padding: 14px 16px; min-height: 70px; }
       .client-card img { max-height: 38px; }
+      .client-card--tall img { max-height: 58px; }
     }
   </style>
 </section>
