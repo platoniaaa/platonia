@@ -79,30 +79,28 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      background: #ffffff;
-      border-radius: 12px;
-      padding: 18px 22px;
-      min-height: 84px;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.18);
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      padding: 8px 12px;
+      min-height: 72px;
+      transition: transform 0.3s ease, opacity 0.3s ease;
+      opacity: 0.75;
     }
     .client-card:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 8px 28px rgba(168,85,247,0.25);
+      opacity: 1;
+      transform: translateY(-2px);
     }
     .client-card img {
-      max-height: 48px;
+      max-height: 44px;
       width: auto;
       max-width: 100%;
       object-fit: contain;
     }
     .client-card--tall img {
-      max-height: 72px;
+      max-height: 68px;
     }
     @media (max-width: 768px) {
-      .client-card { padding: 14px 16px; min-height: 70px; }
-      .client-card img { max-height: 38px; }
-      .client-card--tall img { max-height: 58px; }
+      .client-card { padding: 6px 8px; min-height: 60px; }
+      .client-card img { max-height: 34px; }
+      .client-card--tall img { max-height: 54px; }
     }
   </style>
 </section>
