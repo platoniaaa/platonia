@@ -29,6 +29,7 @@ import logoCompleto from '../assets/img/logo-completo.png';
     </svg>
   </button>
   <div class="mobile-menu-content">
+    <img src={logoCompleto.src} alt="Platonia" class="mobile-menu-logo" style="filter:brightness(0) invert(1);" />
     <div class="marginalia mb-8" style="color:var(--lilac);">&Iacute;ndice</div>
     <a href="#servicios" class="mobile-link">Servicios</a>
     <a href="#por-que-platonia" class="mobile-link">&iquest;Por qu&eacute; Platonia?</a>
@@ -161,6 +162,15 @@ import logoCompleto from '../assets/img/logo-completo.png';
     align-items: center;
     gap: 1.25rem;
     width: 100%;
+  }
+
+  .mobile-menu-logo {
+    height: 40px;
+    width: auto;
+    margin-bottom: 1rem;
+  }
+  @media (min-width: 768px) {
+    .mobile-menu-logo { height: 52px; margin-bottom: 1.5rem; }
   }
 
   .mobile-menu-content .mobile-link {
