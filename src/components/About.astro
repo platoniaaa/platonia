@@ -110,5 +110,55 @@ const values = [
       </div>
     </div>
 
+    <!-- Founder -->
+    <div class="fade-up mt-20 md:mt-28 pt-14 md:pt-20 border-t" style="border-color:rgba(216,180,254,0.12);">
+      <div class="grid grid-cols-12 gap-4 md:gap-8 mb-10 md:mb-14">
+        <div class="col-span-12 md:col-span-3">
+          <div class="eyebrow eyebrow-dot">Fundador</div>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-12 gap-8 md:gap-12 items-center">
+        <div class="col-span-12 md:col-span-4 flex justify-center md:justify-start">
+          <div class="founder-photo-wrapper">
+            <img src="/img/ignacio.jpg" alt="Ignacio Calder&oacute;n - Fundador &amp; CEO de Platonia" class="founder-photo" loading="lazy" />
+          </div>
+        </div>
+
+        <div class="col-span-12 md:col-span-8">
+          <div class="marginalia mb-3 uppercase tracking-[0.2em]" style="color:var(--gold);">Fundador &amp; CEO</div>
+          <h3 class="display-md mb-5" style="font-size:clamp(1.75rem, 3.5vw, 2.5rem);line-height:1.1;">
+            Ignacio <span class="italic-accent">Calder&oacute;n.</span>
+          </h3>
+          <p class="text-base md:text-lg leading-relaxed mb-4" style="color:var(--cream);">
+            Ingeniero Civil Industrial de la <strong style="color:var(--lilac);font-weight:500;">USACH</strong>, especializado en automatizaci&oacute;n de procesos y ciencia de datos.
+          </p>
+          <p class="text-base leading-relaxed" style="color:var(--text-muted);">
+            Lidero Platonia con una idea fija: que ninguna pyme se quede atr&aacute;s por no poder pagar consultor&iacute;a de gran empresa. Combino una mirada t&eacute;cnica rigurosa con un enfoque cercano &mdash; software que entiende c&oacute;mo trabajan las personas que lo van a usar.
+          </p>
+        </div>
+      </div>
+    </div>
+
   </div>
+
+  <style>
+    .founder-photo-wrapper {
+      position: relative;
+      width: clamp(180px, 28vw, 260px);
+      aspect-ratio: 1 / 1;
+      border-radius: 50%;
+      padding: 4px;
+      background: linear-gradient(135deg, var(--lilac) 0%, var(--gold) 100%);
+      box-shadow: 0 20px 60px rgba(107, 33, 168, 0.35);
+    }
+    .founder-photo {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 50%;
+      display: block;
+      background: var(--midnight);
+    }
+  </style>
 </section>
