@@ -127,12 +127,10 @@
         // currentTop = rect.top (changes with scroll)
         // scrolled = how many pixels the video block has moved up
         const initialTop = rect.top + window.scrollY;
-        const blockHeight = rect.height || 1;
         const scrolled = window.scrollY;
-        // Map scroll so the video completes around the point where the video
-        // block has scrolled ~halfway out of view — that way the bust still
-        // has space on screen when the tongue moment hits.
-        const range = Math.max(1, initialTop + blockHeight * 0.4);
+        // Map scroll so the video completes well before the block reaches the
+        // top of the viewport — gives the user time to actually see the tongue.
+        const range = Math.max(1, initialTop * 0.6);
         const progress = Math.max(0, Math.min(1, scrolled / range));
         const target = duration * progress;
         // Smooth scrubbing: only update if difference is meaningful
