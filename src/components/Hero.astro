@@ -25,13 +25,33 @@
       <div class="hairline flex-1 max-w-[200px]"></div>
     </div>
 
-    <!-- Headline -->
-    <h1 class="hero-reveal hero-reveal-2 display-xl mb-8 md:mb-10 max-w-5xl">
-      Tecnolog&iacute;a
-      <span class="italic-accent">inteligente,</span>
-      <br />
-      a precios de pyme.
-    </h1>
+    <!-- Headline + video grid -->
+    <div class="grid grid-cols-12 gap-6 md:gap-10 items-center mb-8 md:mb-10">
+      <div class="col-span-12 lg:col-span-7">
+        <h1 class="hero-reveal hero-reveal-2 display-xl">
+          Tecnolog&iacute;a
+          <span class="italic-accent">inteligente,</span>
+          <br />
+          a precios de pyme.
+        </h1>
+      </div>
+
+      <div class="hero-reveal hero-reveal-2 col-span-12 lg:col-span-5 flex justify-center lg:justify-end">
+        <div class="hero-video-wrapper">
+          <video
+            id="hero-video"
+            class="hero-video"
+            src="/video/hero-busto.mp4"
+            muted
+            playsinline
+            preload="auto"
+            disablepictureinpicture
+            disableremoteplayback
+            aria-hidden="true"
+          ></video>
+        </div>
+      </div>
+    </div>
 
     <!-- Sub + CTAs -->
     <div class="grid grid-cols-12 gap-6 md:gap-10 items-end mb-14 md:mb-20">
@@ -52,4 +72,93 @@
     </div>
 
   </div>
+
+  <style>
+    .hero-video-wrapper {
+      position: relative;
+      width: 100%;
+      max-width: 420px;
+      aspect-ratio: 1 / 1;
+      border-radius: 18px;
+      overflow: hidden;
+      box-shadow: 0 30px 80px rgba(107, 33, 168, 0.45);
+    }
+    .hero-video-wrapper::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      border: 1px solid rgba(216, 180, 254, 0.18);
+      pointer-events: none;
+    }
+    .hero-video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      background: var(--midnight);
+    }
+    @media (max-width: 1023px) {
+      .hero-video-wrapper { max-width: 340px; }
+    }
+    @media (max-width: 640px) {
+      .hero-video-wrapper { max-width: 260px; }
+    }
+  </style>
+
+  <script is:inline>
+    (function () {
+      const video = document.getElementById('hero-video');
+      const section = document.getElementById('hero');
+      if (!video || !section) return;
+
+      let duration = 0;
+      let ticking = false;
+
+      function updateFromScroll() {
+        ticking = false;
+        if (!duration) return;
+        const rect = section.getBoundingClientRect();
+        const sectionHeight = section.offsetHeight || 1;
+        // Progress: 0 when section's top hits viewport top, 1 when section has scrolled fully past
+        const scrolled = -rect.top;
+        const progress = Math.max(0, Math.min(1, scrolled / sectionHeight));
+        const target = duration * progress;
+        // Smooth scrubbing: only update if difference is meaningful
+        if (Math.abs(video.currentTime - target) > 0.02) {
+          try {
+            if (typeof video.fastSeek === 'function') {
+              video.fastSeek(target);
+            } else {
+              video.currentTime = target;
+            }
+          } catch (e) {}
+        }
+      }
+
+      function onScroll() {
+        if (!ticking) {
+          ticking = true;
+          requestAnimationFrame(updateFromScroll);
+        }
+      }
+
+      function onMetadataReady() {
+        duration = video.duration || 0;
+        updateFromScroll();
+      }
+
+      if (video.readyState >= 1 && video.duration) {
+        onMetadataReady();
+      } else {
+        video.addEventListener('loadedmetadata', onMetadataReady, { once: true });
+      }
+
+      window.addEventListener('scroll', onScroll, { passive: true });
+      window.addEventListener('resize', onScroll, { passive: true });
+
+      // Initial sync
+      requestAnimationFrame(updateFromScroll);
+    })();
+  </script>
 </section>
