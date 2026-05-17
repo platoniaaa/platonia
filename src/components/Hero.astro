@@ -79,24 +79,15 @@
       width: 100%;
       max-width: 420px;
       aspect-ratio: 1 / 1;
-      border-radius: 18px;
-      overflow: hidden;
-      box-shadow: 0 30px 80px rgba(107, 33, 168, 0.45);
-    }
-    .hero-video-wrapper::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      border-radius: inherit;
-      border: 1px solid rgba(216, 180, 254, 0.18);
-      pointer-events: none;
+      /* Feather the edges so the bust blends into the violet background */
+      -webkit-mask-image: radial-gradient(ellipse at center, #000 50%, transparent 95%);
+      mask-image: radial-gradient(ellipse at center, #000 50%, transparent 95%);
     }
     .hero-video {
       width: 100%;
       height: 100%;
       object-fit: cover;
       display: block;
-      background: var(--midnight);
     }
     @media (max-width: 1023px) {
       .hero-video-wrapper { max-width: 340px; }
