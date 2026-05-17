@@ -26,17 +26,9 @@
     </div>
 
     <!-- Headline + video grid -->
-    <div class="grid grid-cols-12 gap-6 md:gap-10 items-center mb-8 md:mb-10">
-      <div class="col-span-12 lg:col-span-7">
-        <h1 class="hero-reveal hero-reveal-2 display-xl">
-          Tecnolog&iacute;a
-          <span class="italic-accent">inteligente,</span>
-          <br />
-          a precios de pyme.
-        </h1>
-      </div>
-
-      <div class="hero-reveal hero-reveal-2 col-span-12 lg:col-span-5 flex justify-center lg:justify-end">
+    <div class="grid grid-cols-12 gap-3 md:gap-8 lg:gap-10 items-center mb-8 md:mb-10">
+      <!-- VIDEO: left on mobile, right on desktop -->
+      <div class="hero-reveal hero-reveal-2 col-span-5 lg:col-span-5 lg:order-2 flex justify-start lg:justify-end">
         <div class="hero-video-wrapper">
           <video
             id="hero-video"
@@ -53,6 +45,16 @@
             <source src="/video/hero-busto.mp4" type="video/mp4" />
           </video>
         </div>
+      </div>
+
+      <!-- TEXT: right on mobile, left on desktop -->
+      <div class="col-span-7 lg:col-span-7 lg:order-1">
+        <h1 class="hero-reveal hero-reveal-2 hero-headline">
+          Tecnolog&iacute;a
+          <span class="italic-accent">inteligente,</span>
+          <br />
+          a precios de pyme.
+        </h1>
       </div>
     </div>
 
@@ -93,11 +95,31 @@
       display: block;
       background: transparent;
     }
+
+    /* Headline default uses display-xl scale; on small screens (side-by-side
+       layout) we need a tighter scale so it fits in 7/12 cols. */
+    .hero-headline {
+      font-family: var(--font-display);
+      font-weight: 500;
+      font-size: clamp(2.75rem, 9vw, 7rem);
+      line-height: 0.92;
+      letter-spacing: -0.04em;
+      color: var(--cream);
+    }
     @media (max-width: 1023px) {
-      .hero-video-wrapper { max-width: 340px; }
+      .hero-video-wrapper { max-width: 220px; }
+      .hero-headline {
+        font-size: clamp(1.6rem, 6vw, 3rem);
+        line-height: 1.05;
+      }
     }
     @media (max-width: 640px) {
-      .hero-video-wrapper { max-width: 240px; }
+      .hero-video-wrapper { max-width: 160px; }
+      .hero-headline {
+        font-size: clamp(1.35rem, 6.5vw, 2.25rem);
+        line-height: 1.05;
+        letter-spacing: -0.02em;
+      }
     }
   </style>
 
@@ -107,13 +129,45 @@
       const videoWrap = video ? video.closest('.hero-video-wrapper') : null;
       if (!video || !videoWrap) return;
 
+      // Mobile = scroll-scrubbing is unreliable (seek is slower than swipe).
+      // On those screens we just auto-play the clip once it scrolls into view.
+      const isMobileLayout = window.matchMedia('(max-width: 1023px)').matches;
+
+      // ------ MOBILE: autoplay on visibility -----------------------------
+      if (isMobileLayout) {
+        let played = false;
+        const playWhenReady = () => {
+          if (played) return;
+          played = true;
+          const p = video.play();
+          if (p && typeof p.then === 'function') p.catch(() => { played = false; });
+        };
+        if ('IntersectionObserver' in window) {
+          const io = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                playWhenReady();
+                io.disconnect();
+              }
+            });
+          }, { threshold: 0.25 });
+          io.observe(video);
+        } else {
+          // Older browsers: just try to play immediately
+          playWhenReady();
+        }
+        // iOS sometimes still blocks autoplay until first gesture
+        ['touchstart', 'click', 'scroll'].forEach((evt) => {
+          window.addEventListener(evt, playWhenReady, { once: true, passive: true });
+        });
+        return;
+      }
+
+      // ------ DESKTOP: scroll-scrubbing ----------------------------------
       let duration = 0;
       let ticking = false;
       let primed = false;
 
-      // iOS Safari refuses to decode/seek a video until the user interacts
-      // with the page. To force it to render the first frame, we attempt a
-      // muted play() then immediate pause(). The poster shows in the meantime.
       function primeOnFirstGesture() {
         if (primed) return;
         primed = true;
@@ -153,7 +207,6 @@
 
       function onMetadataReady() {
         duration = video.duration || 0;
-        // Trigger an initial render so the first frame appears immediately
         try { video.currentTime = 0.01; } catch (e) {}
         updateFromScroll();
       }
@@ -164,16 +217,13 @@
         video.addEventListener('loadedmetadata', onMetadataReady, { once: true });
       }
 
-      // Force iOS to initialize the video pipeline on first user interaction
       ['touchstart', 'touchend', 'click', 'scroll'].forEach((evt) => {
         window.addEventListener(evt, primeOnFirstGesture, { once: true, passive: true });
       });
 
       window.addEventListener('scroll', onScroll, { passive: true });
       window.addEventListener('resize', onScroll, { passive: true });
-      window.addEventListener('orientationchange', onScroll, { passive: true });
 
-      // Initial sync
       requestAnimationFrame(updateFromScroll);
     })();
   </script>
