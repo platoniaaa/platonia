@@ -30,30 +30,43 @@
       <!-- TEXT (left, can overflow over video on mobile) -->
       <div class="col-span-7 lg:col-span-7 hero-headline-cell">
         <h1 class="hero-reveal hero-reveal-2 hero-headline">
-          Tecnolog&iacute;a
-          <span class="italic-accent">inteligente,</span>
-          <br />
-          a precios de pyme.
+          Tecnolog&iacute;a<br class="break-mobile" />
+          <span class="italic-accent">inteligente,</span><br />
+          a precios<br class="break-mobile" />
+          de pyme.
         </h1>
       </div>
 
       <!-- VIDEO (right on all sizes) -->
       <div class="hero-reveal hero-reveal-2 col-span-5 lg:col-span-5 flex justify-end">
         <div class="hero-video-wrapper">
+          <!-- Desktop: scrubbable video (preload="none" so it never loads on mobile) -->
           <video
             id="hero-video"
-            class="hero-video"
+            class="hero-video hero-media"
             poster="/video/hero-busto-poster.jpg"
             muted
             playsinline
             webkit-playsinline="true"
-            preload="auto"
+            preload="none"
             disablepictureinpicture
             disableremoteplayback
             aria-hidden="true"
           >
             <source src="/video/hero-busto.mp4" type="video/mp4" />
           </video>
+          <!-- Mobile: image sequence (40 WebP frames). Browser only fetches
+               them when this <img> is actually visible, which we control via
+               CSS so desktop doesn't pay the cost. -->
+          <img
+            id="hero-frames"
+            class="hero-frames hero-media"
+            src="/video/hero-busto-poster.jpg"
+            alt="Platonia"
+            aria-hidden="true"
+            decoding="async"
+            fetchpriority="high"
+          />
         </div>
       </div>
     </div>
@@ -88,38 +101,45 @@
       -webkit-mask-image: radial-gradient(ellipse at center, #000 50%, transparent 95%);
       mask-image: radial-gradient(ellipse at center, #000 50%, transparent 95%);
     }
-    .hero-video {
+    .hero-media {
+      position: absolute;
+      inset: 0;
       width: 100%;
       height: 100%;
       object-fit: cover;
       display: block;
       background: transparent;
     }
+    /* Default: show the video, hide the frame image (desktop). */
+    .hero-frames { display: none; }
+    @media (max-width: 1023px) {
+      /* Mobile/tablet: swap to the image sequence (more reliable scrubbing). */
+      .hero-video { display: none; }
+      .hero-frames { display: block; }
+    }
 
-    /* Headline uses the same large display-xl scale on all sizes. On phones
-       the words can extend past the 7-col cell and overlap the video — the
-       headline sits above (z-index) so the type still reads clearly. */
+    /* Headline uses the same large display-xl scale on all sizes. */
     .hero-headline {
       font-family: var(--font-display);
       font-weight: 500;
       font-size: clamp(2.75rem, 9vw, 7rem);
-      line-height: 0.92;
+      line-height: 0.95;
       letter-spacing: -0.04em;
       color: var(--cream);
-      /* Let words extend past the column when they're wider than its width */
-      white-space: nowrap;
     }
     .hero-headline-cell {
       position: relative;
       z-index: 2;
     }
+    /* Extra line breaks only on phones/tablets (forces 4-line wrap) */
+    .break-mobile { display: none; }
     @media (max-width: 1023px) {
-      .hero-video-wrapper { max-width: 280px; }
+      .break-mobile { display: inline; }
+      .hero-video-wrapper { max-width: 260px; }
     }
     @media (max-width: 640px) {
       .hero-video-wrapper { max-width: 200px; }
       .hero-headline {
-        /* Slightly tighter letter-spacing helps fit "a precios de pyme." */
         letter-spacing: -0.035em;
       }
     }
@@ -128,13 +148,83 @@
   <script is:inline>
     (function () {
       const video = document.getElementById('hero-video');
+      const framesImg = document.getElementById('hero-frames');
       const videoWrap = video ? video.closest('.hero-video-wrapper') : null;
-      if (!video || !videoWrap) return;
+      if (!videoWrap) return;
 
-      // Scroll-scrubbing on every device. The video is encoded with one
-      // keyframe per frame (-g 1) so seeking via currentTime is fast.
-      let duration = 0;
+      const isMobileLayout = window.matchMedia('(max-width: 1023px)').matches;
+
       let ticking = false;
+
+      function computeProgress() {
+        const rect = videoWrap.getBoundingClientRect();
+        const initialTop = rect.top + window.scrollY;
+        const scrolled = window.scrollY;
+        const range = Math.max(1, initialTop * 0.6);
+        return Math.max(0, Math.min(1, scrolled / range));
+      }
+
+      function onScroll() {
+        if (!ticking) {
+          ticking = true;
+          requestAnimationFrame(update);
+        }
+      }
+
+      // ----------------------------------------------------------------
+      // MOBILE: image-sequence scrubbing (40 WebP frames)
+      // ----------------------------------------------------------------
+      if (isMobileLayout && framesImg) {
+        const FRAME_COUNT = 40;
+        const frameUrls = [];
+        for (let i = 1; i <= FRAME_COUNT; i++) {
+          frameUrls.push('/video/frames/f' + String(i).padStart(3, '0') + '.webp');
+        }
+
+        // Preload every frame so swapping is instant
+        const preloaded = new Array(FRAME_COUNT);
+        let loadedCount = 0;
+        frameUrls.forEach((url, i) => {
+          const img = new Image();
+          img.decoding = 'async';
+          img.onload = () => {
+            loadedCount++;
+            if (loadedCount === FRAME_COUNT) update();
+          };
+          img.src = url;
+          preloaded[i] = img;
+        });
+
+        // Show first frame immediately
+        framesImg.src = frameUrls[0];
+
+        let currentIdx = -1;
+        var update = function () {
+          ticking = false;
+          const progress = computeProgress();
+          const idx = Math.min(FRAME_COUNT - 1, Math.floor(progress * FRAME_COUNT));
+          if (idx !== currentIdx) {
+            currentIdx = idx;
+            framesImg.src = frameUrls[idx];
+          }
+        };
+
+        window.addEventListener('scroll', onScroll, { passive: true });
+        window.addEventListener('resize', onScroll, { passive: true });
+        window.addEventListener('orientationchange', onScroll, { passive: true });
+        requestAnimationFrame(update);
+        return;
+      }
+
+      // ----------------------------------------------------------------
+      // DESKTOP: scrubbable <video>
+      // ----------------------------------------------------------------
+      if (!video) return;
+      // Force the video to start loading even though preload was "none"
+      video.preload = 'auto';
+      try { video.load(); } catch (e) {}
+
+      let duration = 0;
       let primed = false;
 
       function primeOnFirstGesture() {
@@ -144,17 +234,13 @@
         if (tryPlay && typeof tryPlay.then === 'function') {
           tryPlay.then(() => video.pause()).catch(() => {});
         }
-        updateFromScroll();
+        update();
       }
 
-      function updateFromScroll() {
+      var update = function () {
         ticking = false;
         if (!duration) return;
-        const rect = videoWrap.getBoundingClientRect();
-        const initialTop = rect.top + window.scrollY;
-        const scrolled = window.scrollY;
-        const range = Math.max(1, initialTop * 0.6);
-        const progress = Math.max(0, Math.min(1, scrolled / range));
+        const progress = computeProgress();
         const target = duration * progress;
         if (Math.abs(video.currentTime - target) > 0.02) {
           try {
@@ -165,19 +251,12 @@
             }
           } catch (e) {}
         }
-      }
-
-      function onScroll() {
-        if (!ticking) {
-          ticking = true;
-          requestAnimationFrame(updateFromScroll);
-        }
-      }
+      };
 
       function onMetadataReady() {
         duration = video.duration || 0;
         try { video.currentTime = 0.01; } catch (e) {}
-        updateFromScroll();
+        update();
       }
 
       if (video.readyState >= 1 && video.duration) {
@@ -193,7 +272,7 @@
       window.addEventListener('scroll', onScroll, { passive: true });
       window.addEventListener('resize', onScroll, { passive: true });
 
-      requestAnimationFrame(updateFromScroll);
+      requestAnimationFrame(update);
     })();
   </script>
 </section>
