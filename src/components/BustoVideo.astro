@@ -4,9 +4,12 @@
 // element's own document offset, so a busto deep in the page only starts
 // animating when it scrolls into view.
 //
-// On mobile/tablet (<=1023px) the <video> is hidden and a <img> swaps
-// through 40 WebP frames instead — Safari's video.currentTime seek isn't
-// fast enough to keep up with finger swipes.
+// Desktop (>=1024px): scrubbable <video> via currentTime.
+// Mobile/tablet (<=1023px): <canvas> + drawImage with pre-decoded frames.
+// Why canvas? On iOS Safari, swapping <img src> for a preloaded image still
+// triggers a decode + element re-render that visibly lags during fast
+// swipes. drawImage of an already-loaded HTMLImageElement is GPU-accelerated
+// and frame-perfect.
 ---
 
 <div class="busto-media-wrapper">
@@ -23,8 +26,10 @@
   >
     <source src="/video/hero-busto.mp4" type="video/mp4" />
   </video>
+  <canvas class="busto-canvas busto-media" aria-hidden="true"></canvas>
+  <!-- Fallback poster while frames are loading -->
   <img
-    class="busto-frames busto-media"
+    class="busto-fallback busto-media"
     src="/video/hero-busto-poster.jpg"
     alt="Platonia"
     aria-hidden="true"
@@ -50,10 +55,15 @@
     display: block;
     background: transparent;
   }
-  .busto-frames { display: none; }
+  .busto-canvas { display: none; }
+  .busto-fallback { display: none; }
+
   @media (max-width: 1023px) {
     .busto-video { display: none; }
-    .busto-frames { display: block; }
+    .busto-canvas { display: block; }
+    /* The fallback is only shown until the canvas has its first frame */
+    .busto-fallback { display: block; }
+    .busto-media-wrapper.is-ready .busto-fallback { display: none; }
   }
 </style>
 
@@ -64,37 +74,42 @@
     frameUrls.push('/video/frames/f' + String(i).padStart(3, '0') + '.webp');
   }
 
-  // Preload every frame once (browser cache de-dupes across components)
-  frameUrls.forEach((url) => {
-    const i = new Image();
-    i.decoding = 'async';
-    i.src = url;
-  });
-
   const isMobileLayout = window.matchMedia('(max-width: 1023px)').matches;
 
+  // Preload all frames as a shared pool so multiple busto instances on the
+  // same page (Hero + About would never co-exist, but the cache is still
+  // shared anyway) only download once.
+  const sharedImages: HTMLImageElement[] = new Array(FRAME_COUNT);
+  let sharedImagesLoaded = 0;
+  const loadCallbacks: Array<(idx: number) => void> = [];
+
+  if (isMobileLayout) {
+    frameUrls.forEach((url, idx) => {
+      const img = new Image();
+      img.decoding = 'async';
+      img.onload = () => {
+        sharedImages[idx] = img;
+        sharedImagesLoaded++;
+        loadCallbacks.forEach((cb) => cb(idx));
+      };
+      img.src = url;
+    });
+  }
+
   function initBusto(wrapper: Element) {
+    const wrapperEl = wrapper as HTMLElement;
     const video = wrapper.querySelector('.busto-video') as HTMLVideoElement | null;
-    const framesImg = wrapper.querySelector('.busto-frames') as HTMLImageElement | null;
-    if (!framesImg) return;
+    const canvas = wrapper.querySelector('.busto-canvas') as HTMLCanvasElement | null;
 
     let ticking = false;
 
     function getProgress() {
-      const rect = wrapper.getBoundingClientRect();
+      const rect = wrapperEl.getBoundingClientRect();
       const viewportH = window.innerHeight || 1;
-      // Convert to document-relative top so the formula is invariant to
-      // current scroll position.
       const wrapperTop = rect.top + window.scrollY;
-      // Animation starts when the busto is about to enter the viewport
-      // (i.e., its top is one viewport below the current scroll), and
-      // finishes when the busto top is ~20% from the viewport top.
+      const blockHeight = rect.height || viewportH * 0.3;
       const entryScroll = Math.max(0, wrapperTop - viewportH);
       let completionScroll = Math.max(0, wrapperTop - viewportH * 0.2);
-      // Ensure a meaningful scroll range when the busto sits near the top of
-      // the page (Hero case). Cap to 65% of the busto's visible scroll range
-      // so the animation finishes BEFORE the bust exits the viewport.
-      const blockHeight = rect.height || viewportH * 0.3;
       const exitScroll = wrapperTop + blockHeight;
       const maxRange = Math.max(1, (exitScroll - entryScroll) * 0.65);
       const minRange = Math.min(viewportH * 0.3, maxRange);
@@ -114,10 +129,48 @@
 
     let update: () => void;
 
-    if (isMobileLayout) {
-      // ----- MOBILE: swap <img> src through the WebP sequence -----
-      framesImg.src = frameUrls[0];
-      let currentIdx = 0;
+    // ============================================================
+    // MOBILE: canvas + drawImage
+    // ============================================================
+    if (isMobileLayout && canvas) {
+      const ctx = canvas.getContext('2d', { alpha: true });
+      if (!ctx) return;
+
+      let currentIdx = -1;
+
+      function resizeCanvas() {
+        const dpr = Math.min(window.devicePixelRatio || 1, 2);
+        const w = wrapperEl.clientWidth || 320;
+        const h = wrapperEl.clientHeight || 320;
+        canvas!.width = Math.round(w * dpr);
+        canvas!.height = Math.round(h * dpr);
+        canvas!.style.width = '100%';
+        canvas!.style.height = '100%';
+        if (currentIdx >= 0) drawFrame(currentIdx);
+      }
+
+      function drawFrame(idx: number) {
+        const img = sharedImages[idx];
+        if (!img || !img.complete) return;
+        const cw = canvas!.width;
+        const ch = canvas!.height;
+        const iw = img.naturalWidth;
+        const ih = img.naturalHeight;
+        // Object-fit cover: scale source to fill canvas, center, crop
+        const iAspect = iw / ih;
+        const cAspect = cw / ch;
+        let sx = 0, sy = 0, sw = iw, sh = ih;
+        if (iAspect > cAspect) {
+          sw = ih * cAspect;
+          sx = (iw - sw) / 2;
+        } else {
+          sh = iw / cAspect;
+          sy = (ih - sh) / 2;
+        }
+        ctx!.clearRect(0, 0, cw, ch);
+        ctx!.drawImage(img, sx, sy, sw, sh, 0, 0, cw, ch);
+        wrapperEl.classList.add('is-ready');
+      }
 
       update = function () {
         ticking = false;
@@ -125,18 +178,31 @@
         const idx = Math.min(FRAME_COUNT - 1, Math.floor(progress * FRAME_COUNT));
         if (idx !== currentIdx) {
           currentIdx = idx;
-          framesImg.src = frameUrls[idx];
+          drawFrame(idx);
         }
       };
 
+      // When a new frame finishes loading, redraw if it's the active one
+      loadCallbacks.push((loadedIdx) => {
+        if (loadedIdx === currentIdx) drawFrame(currentIdx);
+        // Draw frame 0 as soon as it's ready, even before user scrolls
+        if (loadedIdx === 0 && currentIdx < 0) {
+          currentIdx = 0;
+          drawFrame(0);
+        }
+      });
+
+      resizeCanvas();
+      window.addEventListener('resize', resizeCanvas, { passive: true });
+      window.addEventListener('orientationchange', resizeCanvas, { passive: true });
       window.addEventListener('scroll', onScroll, { passive: true });
-      window.addEventListener('resize', onScroll, { passive: true });
-      window.addEventListener('orientationchange', onScroll, { passive: true });
       requestAnimationFrame(update);
       return;
     }
 
-    // ----- DESKTOP: scrub the <video> via currentTime -----
+    // ============================================================
+    // DESKTOP: scrubbable <video>
+    // ============================================================
     if (!video) return;
     video.preload = 'auto';
     try { video.load(); } catch (e) {}
