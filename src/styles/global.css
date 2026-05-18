@@ -282,6 +282,16 @@
     vertical-align: -0.15em;
   }
 
+  .pull-quote::after {
+    content: '\201D';
+    display: inline-block;
+    font-size: 1.3em;
+    line-height: 0.8;
+    color: var(--lilac);
+    margin-left: 0.1em;
+    vertical-align: -0.15em;
+  }
+
   /* --- Marginalia --- */
   .marginalia {
     font-family: var(--font-mono);

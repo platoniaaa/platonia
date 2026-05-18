@@ -1,0 +1,186 @@
+---
+// Reusable bust animation that scrubs to scroll position. Works anywhere on
+// the page (Hero, About, etc.) — the scroll formula derives from the
+// element's own document offset, so a busto deep in the page only starts
+// animating when it scrolls into view.
+//
+// On mobile/tablet (<=1023px) the <video> is hidden and a <img> swaps
+// through 40 WebP frames instead — Safari's video.currentTime seek isn't
+// fast enough to keep up with finger swipes.
+---
+
+<div class="busto-media-wrapper">
+  <video
+    class="busto-video busto-media"
+    poster="/video/hero-busto-poster.jpg"
+    muted
+    playsinline
+    webkit-playsinline="true"
+    preload="none"
+    disablepictureinpicture
+    disableremoteplayback
+    aria-hidden="true"
+  >
+    <source src="/video/hero-busto.mp4" type="video/mp4" />
+  </video>
+  <img
+    class="busto-frames busto-media"
+    src="/video/hero-busto-poster.jpg"
+    alt="Platonia"
+    aria-hidden="true"
+    decoding="async"
+  />
+</div>
+
+<style>
+  .busto-media-wrapper {
+    position: relative;
+    width: 100%;
+    max-width: 420px;
+    aspect-ratio: 1 / 1;
+    -webkit-mask-image: radial-gradient(ellipse at center, #000 50%, transparent 95%);
+    mask-image: radial-gradient(ellipse at center, #000 50%, transparent 95%);
+  }
+  .busto-media {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    background: transparent;
+  }
+  .busto-frames { display: none; }
+  @media (max-width: 1023px) {
+    .busto-video { display: none; }
+    .busto-frames { display: block; }
+  }
+</style>
+
+<script>
+  const FRAME_COUNT = 40;
+  const frameUrls: string[] = [];
+  for (let i = 1; i <= FRAME_COUNT; i++) {
+    frameUrls.push('/video/frames/f' + String(i).padStart(3, '0') + '.webp');
+  }
+
+  // Preload every frame once (browser cache de-dupes across components)
+  frameUrls.forEach((url) => {
+    const i = new Image();
+    i.decoding = 'async';
+    i.src = url;
+  });
+
+  const isMobileLayout = window.matchMedia('(max-width: 1023px)').matches;
+
+  function initBusto(wrapper: Element) {
+    const video = wrapper.querySelector('.busto-video') as HTMLVideoElement | null;
+    const framesImg = wrapper.querySelector('.busto-frames') as HTMLImageElement | null;
+    if (!framesImg) return;
+
+    let ticking = false;
+
+    function getProgress() {
+      const rect = wrapper.getBoundingClientRect();
+      const viewportH = window.innerHeight || 1;
+      // Convert to document-relative top so the formula is invariant to
+      // current scroll position.
+      const wrapperTop = rect.top + window.scrollY;
+      // Animation starts when the busto is about to enter the viewport
+      // (i.e., its top is one viewport below the current scroll), and
+      // finishes when the busto top is ~20% from the viewport top.
+      const entryScroll = Math.max(0, wrapperTop - viewportH);
+      const completionScroll = Math.max(0, wrapperTop - viewportH * 0.2);
+      const range = Math.max(1, completionScroll - entryScroll);
+      return Math.max(0, Math.min(1, (window.scrollY - entryScroll) / range));
+    }
+
+    function onScroll() {
+      if (!ticking) {
+        ticking = true;
+        requestAnimationFrame(update);
+      }
+    }
+
+    let update: () => void;
+
+    if (isMobileLayout) {
+      // ----- MOBILE: swap <img> src through the WebP sequence -----
+      framesImg.src = frameUrls[0];
+      let currentIdx = 0;
+
+      update = function () {
+        ticking = false;
+        const progress = getProgress();
+        const idx = Math.min(FRAME_COUNT - 1, Math.floor(progress * FRAME_COUNT));
+        if (idx !== currentIdx) {
+          currentIdx = idx;
+          framesImg.src = frameUrls[idx];
+        }
+      };
+
+      window.addEventListener('scroll', onScroll, { passive: true });
+      window.addEventListener('resize', onScroll, { passive: true });
+      window.addEventListener('orientationchange', onScroll, { passive: true });
+      requestAnimationFrame(update);
+      return;
+    }
+
+    // ----- DESKTOP: scrub the <video> via currentTime -----
+    if (!video) return;
+    video.preload = 'auto';
+    try { video.load(); } catch (e) {}
+
+    let duration = 0;
+    let primed = false;
+
+    function primeOnFirstGesture() {
+      if (primed) return;
+      primed = true;
+      const tryPlay = video!.play();
+      if (tryPlay && typeof tryPlay.then === 'function') {
+        tryPlay.then(() => video!.pause()).catch(() => {});
+      }
+      update();
+    }
+
+    update = function () {
+      ticking = false;
+      if (!duration) return;
+      const progress = getProgress();
+      const target = duration * progress;
+      if (Math.abs(video!.currentTime - target) > 0.02) {
+        try {
+          if (typeof (video as any).fastSeek === 'function') {
+            (video as any).fastSeek(target);
+          } else {
+            video!.currentTime = target;
+          }
+        } catch (e) {}
+      }
+    };
+
+    function onMetadataReady() {
+      duration = video!.duration || 0;
+      try { video!.currentTime = 0.01; } catch (e) {}
+      update();
+    }
+
+    if (video.readyState >= 1 && video.duration) {
+      onMetadataReady();
+    } else {
+      video.addEventListener('loadedmetadata', onMetadataReady, { once: true });
+    }
+
+    ['touchstart', 'touchend', 'click', 'scroll'].forEach((evt) => {
+      window.addEventListener(evt, primeOnFirstGesture, { once: true, passive: true });
+    });
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll, { passive: true });
+
+    requestAnimationFrame(update);
+  }
+
+  document.querySelectorAll('.busto-media-wrapper').forEach(initBusto);
+</script>

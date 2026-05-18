@@ -1,4 +1,6 @@
 ---
+import BustoVideo from './BustoVideo.astro';
+
 const values = [
   { title: 'Accesibilidad', desc: 'La tecnología de calidad no debería ser un lujo.' },
   { title: 'Innovación con propósito', desc: 'Tecnología que resuelve problemas reales, no buzzwords.' },
@@ -22,53 +24,9 @@ const values = [
 
     <div class="grid grid-cols-12 gap-6 md:gap-10 mb-16 md:mb-24">
 
-      <!-- Editorial formula: Platón + IA = Platonia -->
-      <div class="col-span-12 md:col-span-5 fade-up">
-        <div class="relative aspect-square max-w-[420px] mx-auto md:mx-0 violet-card flex flex-col items-center justify-center" style="padding:2rem;">
-          <div class="absolute inset-0 violet-mesh rounded-[20px]"></div>
-
-          <!-- Top label -->
-          <div class="absolute top-4 left-4 marginalia" style="color:var(--text-muted);">Fig. 01</div>
-          <div class="absolute top-4 right-4 marginalia text-right" style="color:var(--text-muted);">
-            Origen del<br/>nombre
-          </div>
-
-          <!-- Formula content -->
-          <div class="relative z-10 flex flex-col items-center justify-center gap-3 md:gap-4 text-center w-full">
-
-            <div>
-              <div class="marginalia mb-2" style="color:var(--text-muted);">Sabiduría clásica</div>
-              <div style="font-family:var(--font-display);font-size:clamp(2rem, 6vw, 3.25rem);font-style:italic;font-weight:400;color:var(--cream);letter-spacing:-0.02em;line-height:1;">
-                Platón
-              </div>
-            </div>
-
-            <div class="font-mono-accent" style="color:var(--lilac);font-size:1.5rem;line-height:1;">+</div>
-
-            <div>
-              <div class="marginalia mb-2" style="color:var(--text-muted);">Inteligencia moderna</div>
-              <div style="font-family:var(--font-mono);font-size:clamp(1.75rem, 5vw, 2.75rem);font-weight:500;color:var(--cream);letter-spacing:0.05em;line-height:1;">
-                IA
-              </div>
-            </div>
-
-            <div class="font-mono-accent flex items-center gap-2" style="color:var(--lilac);font-size:1.25rem;line-height:1;">
-              <span style="width:32px;height:1px;background:currentColor;"></span>
-              <span style="font-size:0.85em;">=</span>
-              <span style="width:32px;height:1px;background:currentColor;"></span>
-            </div>
-
-            <div>
-              <div style="font-family:var(--font-display);font-size:clamp(2.5rem, 7vw, 4rem);font-weight:500;letter-spacing:-0.03em;line-height:1;background:linear-gradient(135deg, var(--lilac-soft) 0%, var(--gold) 100%);background-clip:text;-webkit-background-clip:text;-webkit-text-fill-color:transparent;">
-                Platonia
-              </div>
-              <div class="marginalia mt-2 uppercase tracking-[0.2em]" style="color:var(--gold);font-size:0.6rem;">
-                desde 2026
-              </div>
-            </div>
-
-          </div>
-        </div>
+      <!-- Busto animation -->
+      <div class="col-span-12 md:col-span-5 fade-up flex justify-center md:justify-start">
+        <BustoVideo />
       </div>
 
       <div class="col-span-12 md:col-span-7 fade-up" style="transition-delay:150ms;">
