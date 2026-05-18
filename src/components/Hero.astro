@@ -2,7 +2,7 @@
 import BustoVideo from './BustoVideo.astro';
 ---
 
-<section id="hero" class="relative min-h-[100svh] flex items-center overflow-hidden" style="background:var(--night);">
+<section id="hero" class="relative min-h-[100svh] overflow-hidden" style="background:var(--night);">
 
   <!-- Violet aurora mesh background -->
   <div class="absolute inset-0 violet-mesh"></div>
@@ -15,12 +15,11 @@ import BustoVideo from './BustoVideo.astro';
   <!-- Noise overlay -->
   <div class="absolute inset-0 noise-bg"></div>
 
-  <div class="relative z-10 w-full max-w-[1440px] mx-auto px-6 md:px-10 pt-24 md:pt-32 pb-16 md:pb-20">
+  <div class="hero-inner relative z-10 w-full max-w-[1440px] mx-auto px-6 md:px-10">
 
-    <!-- Headline + video grid -->
-    <div class="hero-headline-row grid grid-cols-12 gap-3 md:gap-8 lg:gap-10 items-center mb-8 md:mb-10">
-      <!-- TEXT (left, can overflow over video on mobile) -->
-      <div class="col-span-7 lg:col-span-7 hero-headline-cell">
+    <!-- Headline + video -->
+    <div class="hero-headline-row relative">
+      <div class="hero-headline-cell">
         <h1 class="hero-reveal hero-reveal-2 hero-headline">
           Tecnolog&iacute;a<br class="break-mobile" />
           <span class="italic-accent">inteligente,</span><br />
@@ -29,14 +28,13 @@ import BustoVideo from './BustoVideo.astro';
         </h1>
       </div>
 
-      <!-- VIDEO (right on all sizes) -->
-      <div class="hero-reveal hero-reveal-2 col-span-5 lg:col-span-5 flex justify-end">
+      <div class="hero-video-block hero-reveal hero-reveal-2">
         <BustoVideo />
       </div>
     </div>
 
     <!-- Sub + CTAs -->
-    <div class="grid grid-cols-12 gap-6 md:gap-10 items-end mb-14 md:mb-20">
+    <div class="hero-cta-row grid grid-cols-12 gap-6 md:gap-10 items-end">
       <div class="col-span-12 md:col-span-6">
         <p class="hero-reveal hero-reveal-3 text-lg md:text-xl leading-relaxed max-w-xl" style="color:var(--text-muted);">
           Dise&ntilde;amos p&aacute;ginas web, automatizamos procesos con IA y construimos plataformas digitales a medida para pymes.
@@ -56,19 +54,33 @@ import BustoVideo from './BustoVideo.astro';
   </div>
 
   <style>
-    /* Constrain the busto media on smaller screens (in the right-side cell) */
-    @media (max-width: 1023px) {
-      .busto-media-wrapper { max-width: 260px; }
+    /* Fill the viewport vertically and distribute content top -> bottom */
+    .hero-inner {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 100svh;
+      padding-top: 6rem;
+      padding-bottom: 2.5rem;
     }
-    @media (max-width: 640px) {
-      .busto-media-wrapper { max-width: 200px; }
+    @media (min-width: 768px) {
+      .hero-inner {
+        padding-top: 8rem;
+        padding-bottom: 5rem;
+      }
     }
 
-    /* Headline uses the same large display-xl scale on all sizes. */
+    /* Top block (headline + video). Min-height lets it grow to its content
+       while the CTA gets pushed to the bottom by flex justify-between. */
+    .hero-headline-row {
+      width: 100%;
+    }
+
+    /* Headline scale (a bit larger min size on phones so it feels prominent) */
     .hero-headline {
       font-family: var(--font-display);
       font-weight: 500;
-      font-size: clamp(2.75rem, 9vw, 7rem);
+      font-size: clamp(3rem, 11vw, 7rem);
       line-height: 0.95;
       letter-spacing: -0.04em;
       color: var(--cream);
@@ -77,7 +89,7 @@ import BustoVideo from './BustoVideo.astro';
       position: relative;
       z-index: 2;
     }
-    /* Extra line breaks only on phones/tablets (forces 4-line wrap) */
+    /* Forces 4-line wrap on phones/tablets */
     .break-mobile { display: none; }
     @media (max-width: 1023px) {
       .break-mobile { display: inline; }
@@ -87,5 +99,40 @@ import BustoVideo from './BustoVideo.astro';
         letter-spacing: -0.035em;
       }
     }
+
+    /* Video sits absolutely on mobile so it isn't squashed by a grid column.
+       On desktop we switch to a grid-based layout where it sits in col 8-12. */
+    .hero-video-block {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 50%;
+      max-width: 240px;
+      z-index: 1;
+    }
+    @media (max-width: 640px) {
+      .hero-video-block {
+        width: 52%;
+        max-width: 220px;
+      }
+    }
+    @media (min-width: 1024px) {
+      .hero-headline-row {
+        display: grid;
+        grid-template-columns: 7fr 5fr;
+        gap: 2.5rem;
+        align-items: center;
+      }
+      .hero-video-block {
+        position: static;
+        width: 100%;
+        max-width: 420px;
+        justify-self: end;
+        margin-left: auto;
+      }
+    }
+
+    /* CTA row sits at the bottom — keep its own spacing tight */
+    .hero-cta-row { width: 100%; }
   </style>
 </section>
