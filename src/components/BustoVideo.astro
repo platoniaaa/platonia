@@ -91,9 +91,13 @@
       // finishes when the busto top is ~20% from the viewport top.
       const entryScroll = Math.max(0, wrapperTop - viewportH);
       let completionScroll = Math.max(0, wrapperTop - viewportH * 0.2);
-      // Ensure a meaningful scroll range even when the busto sits near the
-      // top of the page (Hero case): scroll for at least 70% of a viewport.
-      const minRange = viewportH * 0.7;
+      // Ensure a meaningful scroll range when the busto sits near the top of
+      // the page (Hero case). Cap to 65% of the busto's visible scroll range
+      // so the animation finishes BEFORE the bust exits the viewport.
+      const blockHeight = rect.height || viewportH * 0.3;
+      const exitScroll = wrapperTop + blockHeight;
+      const maxRange = Math.max(1, (exitScroll - entryScroll) * 0.65);
+      const minRange = Math.min(viewportH * 0.3, maxRange);
       if (completionScroll - entryScroll < minRange) {
         completionScroll = entryScroll + minRange;
       }
