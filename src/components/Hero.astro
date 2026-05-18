@@ -17,8 +17,11 @@ import BustoVideo from './BustoVideo.astro';
 
   <div class="hero-inner relative z-10 w-full max-w-[1440px] mx-auto px-6 md:px-10">
 
-    <!-- Headline + video -->
-    <div class="hero-headline-row relative">
+    <!-- Eyebrow (mobile/tablet only) -->
+    <div class="hero-eyebrow-mobile hero-reveal hero-reveal-1">Tecnolog&iacute;a para pymes</div>
+
+    <!-- Headline + busto -->
+    <div class="hero-headline-row">
       <div class="hero-headline-cell">
         <h1 class="hero-reveal hero-reveal-2 hero-headline">
           Tecnolog&iacute;a<br class="break-mobile" />
@@ -33,50 +36,54 @@ import BustoVideo from './BustoVideo.astro';
       </div>
     </div>
 
-    <!-- Sub + CTAs -->
-    <div class="hero-cta-row grid grid-cols-12 gap-6 md:gap-10 items-end">
-      <div class="col-span-12 md:col-span-6">
-        <p class="hero-reveal hero-reveal-3 text-lg md:text-xl leading-relaxed max-w-xl" style="color:var(--text-muted);">
-          Dise&ntilde;amos p&aacute;ginas web, automatizamos procesos con IA y construimos plataformas digitales a medida para pymes.
-        </p>
-      </div>
-
-      <div class="hero-reveal hero-reveal-4 col-span-12 md:col-span-6">
-        <div class="flex flex-col sm:flex-row gap-3 md:justify-end">
-          <a href="/nosotros" class="btn-primary">
-            Nosotros
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-          </a>
-        </div>
+    <!-- Description + CTA -->
+    <div class="hero-bottom-row">
+      <p class="hero-description hero-reveal hero-reveal-3">
+        Dise&ntilde;amos p&aacute;ginas web, automatizamos procesos con IA y construimos plataformas digitales a medida para pymes.
+      </p>
+      <div class="hero-cta-row hero-reveal hero-reveal-4">
+        <a href="/nosotros" class="btn-primary hero-cta">
+          Nosotros
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </a>
       </div>
     </div>
 
   </div>
 
   <style>
-    /* Fill the viewport vertically and distribute content top -> bottom */
+    /* ===== Container fills viewport, distributes content ===== */
     .hero-inner {
       display: flex;
       flex-direction: column;
-      justify-content: space-between;
       min-height: 100svh;
-      padding-top: 6rem;
-      padding-bottom: 2.5rem;
+      padding-top: 4.5rem;
+      padding-bottom: 2rem;
+      gap: 1.5rem;
     }
     @media (min-width: 768px) {
       .hero-inner {
         padding-top: 8rem;
         padding-bottom: 5rem;
+        gap: 2rem;
+        justify-content: space-between;
       }
     }
 
-    /* Top block (headline + video). Min-height lets it grow to its content
-       while the CTA gets pushed to the bottom by flex justify-between. */
-    .hero-headline-row {
-      width: 100%;
+    /* ===== Mobile eyebrow ===== */
+    .hero-eyebrow-mobile {
+      color: var(--lilac);
+      font-family: var(--font-mono, ui-monospace, monospace);
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+    }
+    @media (min-width: 1024px) {
+      .hero-eyebrow-mobile { display: none; }
     }
 
-    /* Headline scale (a bit larger min size on phones so it feels prominent) */
+    /* ===== Headline scale ===== */
     .hero-headline {
       font-family: var(--font-display);
       font-weight: 500;
@@ -95,25 +102,32 @@ import BustoVideo from './BustoVideo.astro';
       .break-mobile { display: inline; }
     }
     @media (max-width: 640px) {
-      .hero-headline {
-        letter-spacing: -0.035em;
-      }
+      .hero-headline { letter-spacing: -0.035em; }
     }
 
-    /* Video sits absolutely on mobile so it isn't squashed by a grid column.
-       On desktop we switch to a grid-based layout where it sits in col 8-12. */
-    .hero-video-block {
-      position: absolute;
-      top: 0;
-      right: 0;
-      width: 50%;
-      max-width: 240px;
-      z-index: 1;
+    /* ===== Headline + Busto layout =====
+       Mobile: stacked, big centered busto with rounded frame + glow
+       Desktop: grid 7+5 with busto floating right (radial mask preserved) */
+    .hero-headline-row {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
     }
-    @media (max-width: 640px) {
-      .hero-video-block {
-        width: 52%;
-        max-width: 220px;
+    .hero-video-block {
+      display: flex;
+      justify-content: center;
+      width: 100%;
+    }
+    @media (max-width: 1023px) {
+      /* Override BustoVideo's radial mask with a rounded card + glow */
+      .hero-video-block :global(.busto-media-wrapper) {
+        max-width: 460px;
+        width: 100%;
+        -webkit-mask-image: none;
+        mask-image: none;
+        border-radius: 24px;
+        overflow: hidden;
+        box-shadow: 0 25px 70px rgba(107, 33, 168, 0.45);
       }
     }
     @media (min-width: 1024px) {
@@ -123,16 +137,42 @@ import BustoVideo from './BustoVideo.astro';
         gap: 2.5rem;
         align-items: center;
       }
-      .hero-video-block {
-        position: static;
-        width: 100%;
+      .hero-video-block :global(.busto-media-wrapper) {
         max-width: 420px;
-        justify-self: end;
         margin-left: auto;
       }
     }
 
-    /* CTA row sits at the bottom — keep its own spacing tight */
-    .hero-cta-row { width: 100%; }
+    /* ===== Description + CTA ===== */
+    .hero-bottom-row {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+    .hero-description {
+      font-size: 1rem;
+      line-height: 1.6;
+      color: var(--text-muted);
+      max-width: 32rem;
+    }
+    .hero-cta-row { display: flex; }
+    .hero-cta {
+      width: 100%;
+      justify-content: center;
+      padding: 1.1rem 2rem;
+      font-size: 1rem;
+    }
+
+    @media (min-width: 768px) {
+      .hero-bottom-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 2.5rem;
+        align-items: end;
+      }
+      .hero-description { font-size: 1.125rem; line-height: 1.55; }
+      .hero-cta-row { justify-content: flex-end; }
+      .hero-cta { width: auto; padding: 0.75rem 1.75rem; }
+    }
   </style>
 </section>
