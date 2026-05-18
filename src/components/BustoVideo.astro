@@ -90,7 +90,13 @@
       // (i.e., its top is one viewport below the current scroll), and
       // finishes when the busto top is ~20% from the viewport top.
       const entryScroll = Math.max(0, wrapperTop - viewportH);
-      const completionScroll = Math.max(0, wrapperTop - viewportH * 0.2);
+      let completionScroll = Math.max(0, wrapperTop - viewportH * 0.2);
+      // Ensure a meaningful scroll range even when the busto sits near the
+      // top of the page (Hero case): scroll for at least 70% of a viewport.
+      const minRange = viewportH * 0.7;
+      if (completionScroll - entryScroll < minRange) {
+        completionScroll = entryScroll + minRange;
+      }
       const range = Math.max(1, completionScroll - entryScroll);
       return Math.max(0, Math.min(1, (window.scrollY - entryScroll) / range));
     }
